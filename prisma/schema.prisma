@@ -1,0 +1,240 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────────
+// ENUMS
+// ─────────────────────────────────────────────────────────────
+
+enum Role {
+  DIRECTOR
+  TEACHER
+  STUDENT
+}
+
+enum GradeStatus {
+  PENDING    // Teacher submitted, awaiting director approval
+  APPROVED   // Director approved
+  REJECTED   // Director sent back for review
+}
+
+enum AnswerStatus {
+  DRAFT      // Student still editing
+  SUBMITTED  // Student locked in their answer
+  GRADED     // Teacher has graded it
+}
+
+// ─────────────────────────────────────────────────────────────
+// USER
+// ─────────────────────────────────────────────────────────────
+
+model User {
+  uid          String   @id @default(uuid())
+  username     String   @unique
+  email        String   @unique
+  role         Role
+  avatarUrl    String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  workbooks    Workbook[]      // Workbooks this director owns
+  memberships  Membership[]    // All workbooks this user belongs to
+  questions    Question[]      // Questions created by this teacher
+  answers      Answer[]        // Answers submitted by this student
+  annotations  Annotation[]    // Annotations made by this teacher
+  grades       Grade[]         // Grades assigned by this teacher
+  approvals    Grade[]         @relation("ApprovedBy") // Grades approved by this director
+
+  @@map("users")
+}
+
+// ─────────────────────────────────────────────────────────────
+// WORKBOOK
+// A workbook is the top-level container, owned by a Director.
+// Think of it as the Google Doc file itself.
+// ─────────────────────────────────────────────────────────────
+
+model Workbook {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  tag         String?
+  isArchived  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Owner — must be a Director
+  directorId  String
+  director    User         @relation(fields: [directorId], references: [uid])
+
+  // Relations
+  worksheets  Worksheet[]
+  memberships Membership[]
+
+  @@map("workbooks")
+}
+
+// ─────────────────────────────────────────────────────────────
+// MEMBERSHIP
+// Joins a User to a Workbook with their role in that workbook.
+// A user can be in multiple workbooks with different roles.
+// ─────────────────────────────────────────────────────────────
+
+model Membership {
+  id         String   @id @default(uuid())
+  role       Role
+  joinedAt   DateTime @default(now())
+
+  userId     String
+  user       User     @relation(fields: [userId], references: [uid])
+
+  workbookId String
+  workbook   Workbook @relation(fields: [workbookId], references: [id])
+
+  @@unique([userId, workbookId]) // One membership per user per workbook
+  @@map("memberships")
+}
+
+// ─────────────────────────────────────────────────────────────
+// WORKSHEET
+// A tab inside a Workbook. Created and managed by the Director.
+// Think of it like a sheet in Excel — but free-form.
+// ─────────────────────────────────────────────────────────────
+
+model Worksheet {
+  id          String   @id @default(uuid())
+  title       String
+  order       Int      @default(0) // For drag-to-reorder
+  isLocked    Boolean  @default(false) // Director can lock a sheet
+  yjsState    Bytes?   // Serialized Yjs document snapshot (real-time sync state)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workbookId  String
+  workbook    Workbook   @relation(fields: [workbookId], references: [id], onDelete: Cascade)
+
+  // Relations
+  questions   Question[]
+
+  @@map("worksheets")
+}
+
+// ─────────────────────────────────────────────────────────────
+// QUESTION
+// Created by a Teacher inside a Worksheet.
+// Has a text prompt; students respond with Answers.
+// ─────────────────────────────────────────────────────────────
+
+model Question {
+  id          String   @id @default(uuid())
+  text        String
+  order       Int      @default(0) // For reordering within a worksheet
+  isRequired  Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  worksheetId String
+  worksheet   Worksheet @relation(fields: [worksheetId], references: [id], onDelete: Cascade)
+
+  // Teacher who created this question
+  teacherId   String
+  teacher     User      @relation(fields: [teacherId], references: [uid])
+
+  // Relations
+  answers     Answer[]
+
+  @@map("questions")
+}
+
+// ─────────────────────────────────────────────────────────────
+// ANSWER
+// A Student's response to a Question.
+// Has a lifecycle: DRAFT → SUBMITTED → GRADED
+// ─────────────────────────────────────────────────────────────
+
+model Answer {
+  id          String       @id @default(uuid())
+  text        String       @default("")
+  status      AnswerStatus @default(DRAFT)
+  yjsState    Bytes?       // Yjs state for real-time co-editing of this answer
+  submittedAt DateTime?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  questionId  String
+  question    Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
+
+  // Student who owns this answer
+  studentId   String
+  student     User      @relation(fields: [studentId], references: [uid])
+
+  // Relations
+  annotations Annotation[]
+  grade       Grade?
+
+  @@unique([questionId, studentId]) // One answer per student per question
+  @@map("answers")
+}
+
+// ─────────────────────────────────────────────────────────────
+// ANNOTATION
+// A Teacher's suggested edit / comment on a Student's Answer.
+// Non-destructive — never overwrites the original answer text.
+// This is the "Microsoft Word co-editing" layer.
+// ─────────────────────────────────────────────────────────────
+
+model Annotation {
+  id             String   @id @default(uuid())
+  comment        String   // The teacher's written comment
+  suggestedText  String?  // Optional: teacher's rewrite suggestion
+  resolvedAt     DateTime? // Null = still active, set = student acknowledged
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  answerId       String
+  answer         Answer @relation(fields: [answerId], references: [id], onDelete: Cascade)
+
+  // Teacher who made this annotation
+  teacherId      String
+  teacher        User   @relation(fields: [teacherId], references: [uid])
+
+  @@map("annotations")
+}
+
+// ─────────────────────────────────────────────────────────────
+// GRADE
+// Assigned by a Teacher on an Answer, approved by the Director.
+// Lifecycle: PENDING → APPROVED | REJECTED
+// ─────────────────────────────────────────────────────────────
+
+model Grade {
+  id           String      @id @default(uuid())
+  score        Int         // e.g. 87 (out of 100)
+  maxScore     Int         @default(100)
+  feedback     String?     // Teacher's written feedback to student
+  status       GradeStatus @default(PENDING)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  approvedAt   DateTime?   // Set when Director approves
+
+  // The answer being graded — one grade per answer
+  answerId     String      @unique
+  answer       Answer      @relation(fields: [answerId], references: [id], onDelete: Cascade)
+
+  // Teacher who assigned the grade
+  teacherId    String
+  teacher      User        @relation(fields: [teacherId], references: [uid])
+
+  // Director who approved/rejected (nullable until actioned)
+  approvedById String?
+  approvedBy   User?       @relation("ApprovedBy", fields: [approvedById], references: [uid])
+
+  @@map("grades")
+}
