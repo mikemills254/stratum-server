@@ -1,11 +1,24 @@
+import "dotenv/config";
 import express from 'express';
 import cors from "cors"
 import morgan from "morgan"
+import http from "http"
+import { WebSocketServer } from "ws"
+import { hocuspocusServer } from "./hocuspocus"
 
 const app = express();
+const server = http.createServer(app);
 const port = process.env.PORT || 3000;
 
+const wss = new WebSocketServer({ noServer: true });
+
 import workbookRoutes from "./routes/workbook.routes"
+import worksheetRoutes from "./routes/worksheet.routes"
+import membershipRoutes from "./routes/membership.routes"
+import questionRoutes from "./routes/question.routes"
+import answerRoutes from "./routes/answer.routes"
+import gradeRoutes from "./routes/grade.routes"
+import annotationRoutes from "./routes/annotation.routes"
 
 app.use(morgan('combined'))
 app.use(cors())
@@ -13,11 +26,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
 app.use("/api/v1/workbook", workbookRoutes)
+app.use("/api/v1/worksheet", worksheetRoutes)
+app.use("/api/v1/membership", membershipRoutes)
+app.use("/api/v1/question", questionRoutes)
+app.use("/api/v1/answer", answerRoutes)
+app.use("/api/v1/grade", gradeRoutes)
+app.use("/api/v1/annotation", annotationRoutes)
 
 app.get('/', (req, res) => {
     res.json({ message: 'Stratum Server is running!' });
 });
 
-app.listen(port, () => {
+server.on('upgrade', (request, socket, head) => {
+    wss.handleUpgrade(request, socket, head, (ws) => {
+        hocuspocusServer.handleConnection(ws, request);
+    });
+});
+
+server.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });

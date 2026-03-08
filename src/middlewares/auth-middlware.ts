@@ -1,5 +1,6 @@
 import { NextFunction, Response, Request } from "express";
-import { supabase } from "../utilities/supabase.js";
+import { supabase } from "../utilities/supabase";
+import { prisma } from "../utilities/prisma";
 
 export default class AuthService {
     static verify = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
@@ -26,9 +27,23 @@ export default class AuthService {
                 return;
             }
 
+            // Fetch user from Prisma to get the role
+            const user = await prisma.user.findUnique({
+                where: { uid: supabaseUser.id }
+            });
+
+            if (!user) {
+                res.status(404).json({
+                    success: false,
+                    error: "User not found in database."
+                });
+                return;
+            }
+
             req.user = {
-                uid: supabaseUser.id,
-                email: supabaseUser.email ?? "",
+                uid: user.uid,
+                email: user.email,
+                role: user.role,
             };
 
             next();
