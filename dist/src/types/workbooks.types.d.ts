@@ -1,4 +1,5 @@
 import { Workbook } from "../generated/prisma/index.js";
+import { Request, Response } from "express";
 export interface ICreateWorkBook {
     name: string;
     description?: string | null;
@@ -22,5 +23,16 @@ export interface IWorkbookRepository {
 }
 export interface IWorkbookService {
     createWorkbook(userId: string, data: Partial<ICreateWorkBook>): Promise<Workbook>;
+    getWorkbook(userId: string, workbookId: string): Promise<Workbook>;
+    editWorkbook(userId: string, workbookId: string, data: Partial<ICreateWorkBook>): Promise<Workbook>;
+    deleteWorkbook(userId: string, workbookId: string): Promise<void>;
+    searchWorkbooks(userId: string, params: ISearchWorkBook): Promise<Workbook[]>;
+}
+export interface IWorkbookController {
+    handleCreateWorkbook(req: Request, res: Response): Promise<Response>;
+    handleGetWorkbook(req: Request, res: Response): Promise<Response>;
+    handleEditWorkbook(req: Request, res: Response): Promise<Response>;
+    handleDeleteWorkbook(req: Request, res: Response): Promise<Response>;
+    handleSearchWorkbooks(req: Request, res: Response): Promise<Response>;
 }
 //# sourceMappingURL=workbooks.types.d.ts.map

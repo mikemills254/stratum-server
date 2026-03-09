@@ -1,4 +1,4 @@
-import { Workbook } from "../../generated/prisma";
+import { Workbook } from "../../../prisma/generated/prisma";
 import { ICreateWorkBook, ISearchWorkBook, IWorkbookService } from "../../types/workbooks.types";
 declare class WorkbookService implements IWorkbookService {
     private repository;

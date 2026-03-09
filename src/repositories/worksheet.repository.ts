@@ -1,4 +1,4 @@
-import { Worksheet } from "../generated/prisma/index";
+import { Worksheet } from "../../prisma/generated/prisma";
 import { ICreateWorksheet, IUpdateWorksheet, IWorksheetRepository } from "../types/worksheets.types";
 import { prisma } from "../utilities/prisma";
 

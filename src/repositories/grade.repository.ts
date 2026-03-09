@@ -1,4 +1,4 @@
-import { Grade } from "../generated/prisma";
+import { Grade } from "../../prisma/generated/prisma";
 import { prisma } from "../utilities/prisma";
 
 export interface ICreateGrade {

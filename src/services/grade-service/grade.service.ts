@@ -1,4 +1,4 @@
-import { Grade, GradeStatus, AnswerStatus } from "../../generated/prisma";
+import { Grade, GradeStatus, AnswerStatus } from "../../../prisma/generated/prisma";
 import { GradeRepository, ICreateGrade } from "../../repositories/grade.repository";
 import { AnswerRepository } from "../../repositories/answer.repository";
 

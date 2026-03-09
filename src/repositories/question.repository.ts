@@ -1,4 +1,4 @@
-import { Question } from "../generated/prisma/index";
+import { Question } from "../../prisma/generated/prisma";
 import { ICreateQuestion, IQuestionRepository, IUpdateQuestion } from "../types/questions.types";
 import { prisma } from "../utilities/prisma";
 

@@ -1,4 +1,4 @@
-import { Membership, Role } from "../../generated/prisma/index";
+import { Membership, Role } from "../../../prisma/generated/prisma";
 import MembershipRepository from "../../repositories/membership.repository";
 import { ICreateMembership, IMembershipRepository, IMembershipService } from "../../types/memberships.types";
 import { prisma } from "../../utilities/prisma";

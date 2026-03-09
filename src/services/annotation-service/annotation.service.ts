@@ -1,4 +1,4 @@
-import { Annotation } from "../../generated/prisma";
+import { Annotation } from "../../../prisma/generated/prisma";
 import { AnnotationRepository, ICreateAnnotation } from "../../repositories/annotation.repository";
 
 export class AnnotationService {

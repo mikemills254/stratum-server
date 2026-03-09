@@ -1,4 +1,4 @@
-import { Answer, AnswerStatus } from "../../generated/prisma";
+import { Answer, AnswerStatus } from "../../../prisma/generated/prisma";
 import { AnswerRepository, ICreateAnswer } from "../../repositories/answer.repository";
 
 export class AnswerService {

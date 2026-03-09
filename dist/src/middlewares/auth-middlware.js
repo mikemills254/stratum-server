@@ -1,7 +1,8 @@
 "use strict";
 var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
-const supabase_js_1 = require("../utilities/supabase.js");
+const supabase_1 = require("../utilities/supabase");
+const prisma_1 = require("../utilities/prisma");
 class AuthService {
 }
 _a = AuthService;
@@ -16,7 +17,7 @@ AuthService.verify = async (req, res, next) => {
             return;
         }
         const token = authHeader.replace("Bearer ", "").trim();
-        const { data: { user: supabaseUser }, error } = await supabase_js_1.supabase.auth.getUser(token);
+        const { data: { user: supabaseUser }, error } = await supabase_1.supabase.auth.getUser(token);
         if (error || !supabaseUser) {
             res.status(401).json({
                 success: false,
@@ -24,9 +25,21 @@ AuthService.verify = async (req, res, next) => {
             });
             return;
         }
+        // Fetch user from Prisma to get the role
+        const user = await prisma_1.prisma.user.findUnique({
+            where: { uid: supabaseUser.id }
+        });
+        if (!user) {
+            res.status(404).json({
+                success: false,
+                error: "User not found in database."
+            });
+            return;
+        }
         req.user = {
-            uid: supabaseUser.id,
-            email: supabaseUser.email ?? "",
+            uid: user.uid,
+            email: user.email,
+            role: user.role,
         };
         next();
     }

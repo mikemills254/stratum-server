@@ -3,7 +3,7 @@ import { Logger } from "@hocuspocus/extension-logger";
 import { Database } from "@hocuspocus/extension-database";
 import { supabase } from "./utilities/supabase";
 import { prisma } from "./utilities/prisma";
-import { Role } from "./generated/prisma";
+import { Role } from "../prisma/generated/prisma";
 
 export const hocuspocusServer = new Hocuspocus({
     name: "stratum-collaboration",

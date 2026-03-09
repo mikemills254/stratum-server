@@ -1,4 +1,4 @@
-import { Answer } from "../generated/prisma";
+import { Answer } from "../../prisma/generated/prisma";
 import { prisma } from "../utilities/prisma";
 
 export interface ICreateAnswer {

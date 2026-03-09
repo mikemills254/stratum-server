@@ -1,4 +1,4 @@
-import { Workbook } from "../generated/prisma/index.js";
+import { Workbook } from "../../prisma/generated/prisma";
 import { Request, Response } from "express";
 
 export interface ICreateWorkBook {
