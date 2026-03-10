@@ -47,6 +47,8 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
+app.options('*', cors());
+
 app.use("/api/v1/workbook", workbookRoutes)
 app.use("/api/v1/worksheet", worksheetRoutes)
 app.use("/api/v1/membership", membershipRoutes)
