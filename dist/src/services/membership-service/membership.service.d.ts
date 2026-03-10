@@ -1,4 +1,4 @@
-import { Membership, Role } from "../../generated/prisma/index";
+import { Membership, Role } from "../../../prisma/generated/prisma";
 import { ICreateMembership, IMembershipService } from "../../types/memberships.types";
 declare class MembershipService implements IMembershipService {
     private repository;

@@ -164,6 +164,24 @@ class WorkbookService implements IWorkbookService {
             throw error
         }
     }
+    async getWorkbookStats(userId: string, workbookId: string): Promise<any> {
+        try {
+            if (!userId) throw new Error("User ID is required.")
+            if (!workbookId) throw new Error("Workbook ID is required.")
+
+            const isMember = await this.validateMembership(userId, workbookId)
+            const isDir = await this.validateDirector(userId)
+
+            // Only members or the director can see stats
+            if (!isMember && !isDir) {
+                throw new Error("You do not have access to these stats.")
+            }
+
+            return await this.repository.getStats(workbookId)
+        } catch (error) {
+            throw error
+        }
+    }
 }
 
 export default WorkbookService

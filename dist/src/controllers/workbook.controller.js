@@ -134,6 +134,29 @@ class WorkbookController {
             });
         }
     }
+    async handleGetWorkbookStats(req, res) {
+        try {
+            const user = req.user;
+            if (!user)
+                return res.status(401).json({ message: "Unauthorised", success: false });
+            const id = req.params.id;
+            if (!id)
+                return res.status(400).json({ message: "Workbook ID is required", success: false });
+            const stats = await this.service.getWorkbookStats(user.uid, id);
+            return res.status(200).json({
+                message: "Success",
+                data: stats,
+                success: true
+            });
+        }
+        catch (error) {
+            return res.status(500).json({
+                message: "Internal server error",
+                success: false,
+                error: error instanceof Error ? error.message : String(error)
+            });
+        }
+    }
 }
 exports.default = WorkbookController;
 //# sourceMappingURL=workbook.controller.js.map

@@ -3,19 +3,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../generated/prisma/index");
+const prisma_1 = require("../../../prisma/generated/prisma");
 const membership_repository_1 = __importDefault(require("../../repositories/membership.repository"));
-const prisma_1 = require("../../utilities/prisma");
+const prisma_2 = require("../../utilities/prisma");
 class MembershipService {
     constructor() {
         this.repository = new membership_repository_1.default();
     }
     async validateDirector(userId, workbookId) {
-        const user = await prisma_1.prisma.user.findUnique({ where: { uid: userId } });
-        if (!user || user.role !== index_1.Role.DIRECTOR) {
+        const user = await prisma_2.prisma.user.findUnique({ where: { uid: userId } });
+        if (!user || user.role !== prisma_1.Role.DIRECTOR) {
             throw new Error("Only Directors can manage memberships.");
         }
-        const workbook = await prisma_1.prisma.workbook.findUnique({ where: { id: workbookId } });
+        const workbook = await prisma_2.prisma.workbook.findUnique({ where: { id: workbookId } });
         if (!workbook)
             throw new Error("Workbook not found.");
         if (workbook.directorId !== userId) {
@@ -26,10 +26,10 @@ class MembershipService {
         try {
             await this.validateDirector(userId, data.workbookId);
             // Check if user exists and is a teacher
-            const targetUser = await prisma_1.prisma.user.findUnique({ where: { uid: data.userId } });
+            const targetUser = await prisma_2.prisma.user.findUnique({ where: { uid: data.userId } });
             if (!targetUser)
                 throw new Error("User to add not found.");
-            if (targetUser.role !== index_1.Role.TEACHER) {
+            if (targetUser.role !== prisma_1.Role.TEACHER) {
                 throw new Error("Only Teachers can be added to workbooks.");
             }
             // Check if already a member
@@ -75,12 +75,12 @@ class MembershipService {
     async getMembershipsByWorkbook(userId, workbookId) {
         try {
             // Check access: must be the director or a member
-            const membership = await prisma_1.prisma.membership.findUnique({
+            const membership = await prisma_2.prisma.membership.findUnique({
                 where: {
                     userId_workbookId: { userId, workbookId }
                 }
             });
-            const workbook = await prisma_1.prisma.workbook.findUnique({ where: { id: workbookId } });
+            const workbook = await prisma_2.prisma.workbook.findUnique({ where: { id: workbookId } });
             if (!workbook)
                 throw new Error("Workbook not found.");
             if (!membership && workbook.directorId !== userId) {

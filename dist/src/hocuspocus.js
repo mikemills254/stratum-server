@@ -6,7 +6,7 @@ const extension_logger_1 = require("@hocuspocus/extension-logger");
 const extension_database_1 = require("@hocuspocus/extension-database");
 const supabase_1 = require("./utilities/supabase");
 const prisma_1 = require("./utilities/prisma");
-const prisma_2 = require("./generated/prisma");
+const prisma_2 = require("../prisma/generated/prisma");
 exports.hocuspocusServer = new server_1.Hocuspocus({
     name: "stratum-collaboration",
     extensions: [

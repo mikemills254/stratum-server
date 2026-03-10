@@ -1,4 +1,4 @@
-import { Question } from "../generated/prisma/index";
+import { Question } from "../../prisma/generated/prisma";
 import { ICreateQuestion, IQuestionRepository, IUpdateQuestion } from "../types/questions.types";
 declare class QuestionRepository implements IQuestionRepository {
     create(data: ICreateQuestion): Promise<Question>;

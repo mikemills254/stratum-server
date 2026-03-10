@@ -9,6 +9,7 @@ class WorksheetRepository implements IWorksheetRepository {
             const worksheet = await prisma.worksheet.create({
                 data: {
                     title: data.title,
+                    description: data.description,
                     order: data.order ?? 0,
                     workbook: {
                         connect: { id: data.workbookId }
@@ -24,9 +25,10 @@ class WorksheetRepository implements IWorksheetRepository {
     async get(id: string): Promise<Worksheet | null> {
         try {
             const worksheet = await prisma.worksheet.findUnique({
-                where: { id }
+                where: { id },
+                include: { questions: true }
             })
-            return worksheet
+            return worksheet as any // Using any for now to allow including relations
         } catch (error) {
             throw error
         }
@@ -41,9 +43,10 @@ class WorksheetRepository implements IWorksheetRepository {
                     ...(data.order !== undefined && { order: data.order }),
                     ...(data.isLocked !== undefined && { isLocked: data.isLocked }),
                     ...(data.yjsState && { yjsState: data.yjsState }),
-                }
+                },
+                include: { questions: true }
             })
-            return worksheet
+            return worksheet as any
         } catch (error) {
             throw error
         }
@@ -63,9 +66,10 @@ class WorksheetRepository implements IWorksheetRepository {
         try {
             const worksheets = await prisma.worksheet.findMany({
                 where: { workbookId },
-                orderBy: { order: "asc" }
+                orderBy: { order: "asc" },
+                include: { questions: true }
             })
-            return worksheets
+            return worksheets as any
         } catch (error) {
             throw error
         }

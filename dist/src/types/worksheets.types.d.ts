@@ -1,7 +1,8 @@
-import { Worksheet } from "../generated/prisma/index";
+import { Worksheet } from "../../prisma/generated/prisma";
 import { Request, Response } from "express";
 export interface ICreateWorksheet {
     title: string;
+    description: string;
     workbookId: string;
     order?: number;
 }

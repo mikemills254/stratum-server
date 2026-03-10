@@ -7,6 +7,7 @@ const controller = new AnswerController();
 
 router.post("/", AuthService.verify, (req, res) => controller.handleCreateAnswer(req, res));
 router.post("/:id/submit", AuthService.verify, (req, res) => controller.handleSubmitAnswer(req, res));
+router.put("/:id/text", AuthService.verify, (req, res) => controller.handleUpdateAnswerText(req, res));
 router.get("/:id", AuthService.verify, (req, res) => controller.handleGetAnswer(req, res));
 router.get("/question/:questionId", AuthService.verify, (req, res) => controller.handleGetAnswersByQuestion(req, res));
 

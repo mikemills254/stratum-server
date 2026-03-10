@@ -7,6 +7,7 @@ class WorksheetRepository {
             const worksheet = await prisma_1.prisma.worksheet.create({
                 data: {
                     title: data.title,
+                    description: data.description,
                     order: data.order ?? 0,
                     workbook: {
                         connect: { id: data.workbookId }

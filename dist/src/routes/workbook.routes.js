@@ -48,5 +48,13 @@ router.delete("/:id", auth_middlware_1.default.verify, async (req, res, next) =>
         next(error);
     }
 });
+router.get("/:id/stats", auth_middlware_1.default.verify, async (req, res, next) => {
+    try {
+        await controller.handleGetWorkbookStats(req, res);
+    }
+    catch (error) {
+        next(error);
+    }
+});
 exports.default = router;
 //# sourceMappingURL=workbook.routes.js.map

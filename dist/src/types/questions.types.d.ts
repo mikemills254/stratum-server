@@ -1,4 +1,4 @@
-import { Question } from "../generated/prisma/index";
+import { Question } from "../../prisma/generated/prisma";
 import { Request, Response } from "express";
 export interface ICreateQuestion {
     text: string;

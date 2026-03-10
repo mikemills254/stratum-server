@@ -10,6 +10,7 @@ declare class WorkbookService implements IWorkbookService {
     editWorkbook(userId: string, workbookId: string, data: Partial<ICreateWorkBook>): Promise<Workbook>;
     deleteWorkbook(userId: string, workbookId: string): Promise<void>;
     searchWorkbooks(userId: string, params: ISearchWorkBook): Promise<Workbook[]>;
+    getWorkbookStats(userId: string, workbookId: string): Promise<any>;
 }
 export default WorkbookService;
 //# sourceMappingURL=workbook.service.d.ts.map

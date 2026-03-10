@@ -3,10 +3,10 @@ var _a;
 Object.defineProperty(exports, "__esModule", { value: true });
 const supabase_1 = require("../utilities/supabase");
 const prisma_1 = require("../utilities/prisma");
-class AuthService {
+class AuthMiddleware {
 }
-_a = AuthService;
-AuthService.verify = async (req, res, next) => {
+_a = AuthMiddleware;
+AuthMiddleware.verify = async (req, res, next) => {
     try {
         const authHeader = req.header("Authorization");
         if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -25,17 +25,16 @@ AuthService.verify = async (req, res, next) => {
             });
             return;
         }
-        // Fetch user from Prisma to get the role
-        const user = await prisma_1.prisma.user.findUnique({
-            where: { uid: supabaseUser.id }
+        const user = await prisma_1.prisma.user.upsert({
+            where: { uid: supabaseUser.id },
+            update: {},
+            create: {
+                uid: supabaseUser.id,
+                email: supabaseUser.email,
+                username: `${supabaseUser.user_metadata.first_name} ${supabaseUser.user_metadata.last_name}`,
+                role: supabaseUser.user_metadata.role,
+            }
         });
-        if (!user) {
-            res.status(404).json({
-                success: false,
-                error: "User not found in database."
-            });
-            return;
-        }
         req.user = {
             uid: user.uid,
             email: user.email,
@@ -51,5 +50,5 @@ AuthService.verify = async (req, res, next) => {
         });
     }
 };
-exports.default = AuthService;
+exports.default = AuthMiddleware;
 //# sourceMappingURL=auth-middlware.js.map

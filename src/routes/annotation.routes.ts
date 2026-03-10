@@ -8,5 +8,7 @@ const controller = new AnnotationController();
 router.post("/", AuthService.verify, (req, res) => controller.handleCreateAnnotation(req, res));
 router.get("/answer/:answerId", AuthService.verify, (req, res) => controller.handleGetAnnotationsByAnswer(req, res));
 router.patch("/:id/resolve", AuthService.verify, (req, res) => controller.handleResolveAnnotation(req, res));
+router.patch("/:id", AuthService.verify, (req, res) => controller.handleUpdateAnnotation(req, res));
+router.delete("/:id", AuthService.verify, (req, res) => controller.handleDeleteAnnotation(req, res));
 
 export default router;

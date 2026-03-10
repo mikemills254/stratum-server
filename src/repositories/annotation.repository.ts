@@ -17,6 +17,22 @@ export class AnnotationRepository {
                 comment: data.comment,
                 suggestedText: data.suggestedText,
             },
+            include: {
+                teacher: true,
+                answer: {
+                    include: {
+                        question: {
+                            include: {
+                                worksheet: {
+                                    select: {
+                                        workbookId: true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         });
     }
 
@@ -24,6 +40,28 @@ export class AnnotationRepository {
         return prisma.annotation.findMany({
             where: { answerId },
             include: { teacher: true },
+        });
+    }
+
+    async getById(id: string): Promise<Annotation | null> {
+        return prisma.annotation.findUnique({
+            where: { id },
+            include: {
+                teacher: true,
+                answer: {
+                    include: {
+                        question: {
+                            include: {
+                                worksheet: {
+                                    select: {
+                                        workbookId: true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
         });
     }
 

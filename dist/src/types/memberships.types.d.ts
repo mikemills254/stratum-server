@@ -1,4 +1,4 @@
-import { Membership, Role } from "../generated/prisma/index";
+import { Membership, Role } from "../../prisma/generated/prisma";
 import { Request, Response } from "express";
 export interface ICreateMembership {
     userId: string;

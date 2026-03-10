@@ -76,4 +76,51 @@ export class AnnotationController {
             });
         }
     }
+
+    async handleUpdateAnnotation(req: Request, res: Response): Promise<Response> {
+        try {
+            const user = req.user;
+            if (!user || user.role !== "TEACHER") {
+                return res.status(403).json({ message: "Only teachers can update annotations", success: false });
+            }
+
+            const { id } = req.params as { id: string };
+            const { comment, suggestedText } = req.body;
+
+            const annotation = await this.service.updateAnnotation(id, user.uid, { comment, suggestedText });
+
+            return res.status(200).json({
+                message: "Annotation updated successfully",
+                data: annotation,
+                success: true,
+            });
+        } catch (error) {
+            return res.status(error instanceof Error && error.message.includes("owner") ? 403 : 500).json({
+                message: error instanceof Error ? error.message : "Internal server error",
+                success: false,
+            });
+        }
+    }
+
+    async handleDeleteAnnotation(req: Request, res: Response): Promise<Response> {
+        try {
+            const user = req.user;
+            if (!user || user.role !== "TEACHER") {
+                return res.status(403).json({ message: "Only teachers can delete annotations", success: false });
+            }
+
+            const { id } = req.params as { id: string };
+            await this.service.deleteAnnotation(id, user.uid);
+
+            return res.status(200).json({
+                message: "Annotation deleted successfully",
+                success: true,
+            });
+        } catch (error) {
+            return res.status(error instanceof Error && error.message.includes("owner") ? 403 : 500).json({
+                message: error instanceof Error ? error.message : "Internal server error",
+                success: false,
+            });
+        }
+    }
 }

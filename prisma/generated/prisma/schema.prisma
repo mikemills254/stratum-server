@@ -30,6 +30,15 @@ enum AnswerStatus {
   GRADED // Teacher has graded it
 }
 
+enum AuditLogType {
+  SUBMISSION
+  GRADING
+  ANNOTATION
+  STREAK
+  WORKBOOK_UPDATE
+  ENROLLMENT
+}
+
 // ─────────────────────────────────────────────────────────────
 // USER
 // ─────────────────────────────────────────────────────────────
@@ -43,6 +52,11 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // 2FA
+  twoFactorCode       String?
+  twoFactorVerified   Boolean   @default(false)
+  twoFactorCodeExpiry DateTime?
+
   // Relations
   workbooks   Workbook[] // Workbooks this director owns
   memberships Membership[] // All workbooks this user belongs to
@@ -51,8 +65,33 @@ model User {
   annotations Annotation[] // Annotations made by this teacher
   grades      Grade[] // Grades assigned by this teacher
   approvals   Grade[]      @relation("ApprovedBy") // Grades approved by this director
+  auditLogs   AuditLog[] // Logs associated with this user
 
   @@map("users")
+}
+
+// ─────────────────────────────────────────────────────────────
+// AUDIT LOG
+// Records important actions for history and real-time feeds.
+// ─────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id          String       @id @default(uuid())
+  type        AuditLogType
+  title       String
+  description String?
+  metadata    Json? // Flexible storage for event data
+  createdAt   DateTime     @default(now())
+
+  // Actor
+  userId String
+  user   User   @relation(fields: [userId], references: [uid])
+
+  // Context
+  workbookId String?
+  workbook   Workbook? @relation(fields: [workbookId], references: [id])
+
+  @@map("audit_logs")
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -77,6 +116,7 @@ model Workbook {
   // Relations
   worksheets  Worksheet[]
   memberships Membership[]
+  auditLogs   AuditLog[]
 
   @@map("workbooks")
 }
@@ -109,13 +149,14 @@ model Membership {
 // ─────────────────────────────────────────────────────────────
 
 model Worksheet {
-  id        String   @id @default(uuid())
-  title     String
-  order     Int      @default(0) // For drag-to-reorder
-  isLocked  Boolean  @default(false) // Director can lock a sheet
-  yjsState  Bytes? // Serialized Yjs document snapshot (real-time sync state)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  order       Int      @default(0) // For drag-to-reorder
+  isLocked    Boolean  @default(false) // Director can lock a sheet
+  yjsState    Bytes? // Serialized Yjs document snapshot (real-time sync state)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   workbookId String
   workbook   Workbook @relation(fields: [workbookId], references: [id], onDelete: Cascade)

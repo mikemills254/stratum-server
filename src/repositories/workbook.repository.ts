@@ -1,4 +1,4 @@
-import { Workbook } from "../../prisma/generated/prisma";
+import { Role, Workbook } from "../../prisma/generated/prisma";
 import { ICreateWorkBook, ISearchWorkBook, IWorkbookRepository } from "../types/workbooks.types";
 import { prisma } from "../utilities/prisma";
 
@@ -13,6 +13,12 @@ class WorkbookRepository implements IWorkbookRepository {
                     tag: data.tag,
                     director: {
                         connect: { uid: data.directorId }
+                    },
+                    memberships: {
+                        create: {
+                            userId: data.directorId,
+                            role: Role.DIRECTOR
+                        }
                     }
                 }
             })
@@ -25,7 +31,17 @@ class WorkbookRepository implements IWorkbookRepository {
     async get(id: string): Promise<Workbook | null> {
         try {
             const workbook = await prisma.workbook.findUnique({
-                where: { id }
+                where: { id },
+                include: {
+                    worksheets: {
+                        orderBy: { createdAt: 'asc' },
+                        include: {
+                            questions: {
+                                orderBy: { createdAt: 'asc' }
+                            }
+                        }
+                    }
+                }
             })
             return workbook
         } catch (error) {
@@ -87,6 +103,91 @@ class WorkbookRepository implements IWorkbookRepository {
         }
     }
 
+    async getStats(id: string): Promise<any> {
+        try {
+            const [workbook, teachers, students] = await Promise.all([
+                prisma.workbook.findUnique({
+                    where: { id },
+                    include: {
+                        worksheets: {
+                            include: {
+                                _count: { select: { questions: true } }
+                            }
+                        }
+                    }
+                }),
+                prisma.membership.findMany({
+                    where: { workbookId: id, role: "TEACHER" },
+                    include: {
+                        user: {
+                            select: {
+                                uid: true,
+                                username: true,
+                                email: true,
+                                avatarUrl: true
+                            }
+                        }
+                    }
+                }),
+                prisma.membership.findMany({
+                    where: { workbookId: id, role: "STUDENT" },
+                    include: {
+                        user: {
+                            include: {
+                                answers: {
+                                    where: {
+                                        question: {
+                                            worksheet: { workbookId: id }
+                                        }
+                                    },
+                                    select: { status: true }
+                                }
+                            }
+                        }
+                    }
+                })
+            ]);
+
+            const totalQuestions = workbook?.worksheets.reduce((acc, ws) => acc + ws._count.questions, 0) || 0;
+
+            const studentProgress = students.map(m => {
+                const completed = m.user.answers.filter(a => a.status === 'SUBMITTED' || a.status === 'GRADED').length;
+                const graded = m.user.answers.filter(a => a.status === 'GRADED').length;
+                return {
+                    uid: m.user.uid,
+                    username: m.user.username,
+                    email: m.user.email,
+                    avatarUrl: m.user.avatarUrl,
+                    completedCount: completed,
+                    gradedCount: graded,
+                    progress: totalQuestions > 0 ? Math.round((completed / totalQuestions) * 100) : 0
+                };
+            });
+
+            // Get grading activity for teachers
+            const pendingGrades = await prisma.grade.groupBy({
+                by: ['teacherId'],
+                where: {
+                    status: 'PENDING',
+                    answer: { question: { worksheet: { workbookId: id } } }
+                },
+                _count: true
+            });
+
+            return {
+                totalQuestions,
+                teacherCount: teachers.length,
+                studentCount: students.length,
+                teachers: teachers.map(m => ({
+                    ...m.user,
+                    pendingApprovals: pendingGrades.find(pg => pg.teacherId === m.user.uid)?._count || 0
+                })),
+                students: studentProgress
+            };
+        } catch (error) {
+            throw error;
+        }
+    }
 }
 
 export default WorkbookRepository

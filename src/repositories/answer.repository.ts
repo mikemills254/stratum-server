@@ -15,6 +15,19 @@ export class AnswerRepository {
                 student: { connect: { uid: data.studentId } },
                 text: data.text || "",
             },
+            include: {
+                annotations: {
+                    include: {
+                        teacher: {
+                            select: {
+                                username: true,
+                                avatarUrl: true
+                            }
+                        }
+                    }
+                },
+                grade: true
+            }
         });
     }
 
@@ -23,8 +36,26 @@ export class AnswerRepository {
             where: { id },
             include: {
                 grade: true,
-                annotations: true,
+                annotations: {
+                    include: {
+                        teacher: {
+                            select: {
+                                username: true,
+                                avatarUrl: true
+                            }
+                        }
+                    }
+                },
                 student: true,
+                question: {
+                    include: {
+                        worksheet: {
+                            select: {
+                                workbookId: true
+                            }
+                        }
+                    }
+                }
             },
         });
     }
@@ -34,6 +65,19 @@ export class AnswerRepository {
             where: {
                 questionId_studentId: { questionId, studentId },
             },
+            include: {
+                annotations: {
+                    include: {
+                        teacher: {
+                            select: {
+                                username: true,
+                                avatarUrl: true
+                            }
+                        }
+                    }
+                },
+                grade: true
+            }
         });
     }
 
@@ -53,7 +97,20 @@ export class AnswerRepository {
     async getByQuestion(questionId: string): Promise<Answer[]> {
         return prisma.answer.findMany({
             where: { questionId },
-            include: { student: true, grade: true },
+            include: {
+                student: true,
+                grade: true,
+                annotations: {
+                    include: {
+                        teacher: {
+                            select: {
+                                username: true,
+                                avatarUrl: true
+                            }
+                        }
+                    }
+                }
+            },
         });
     }
 }

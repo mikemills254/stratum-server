@@ -1,4 +1,4 @@
-import { Membership } from "../../generated/prisma/index";
+import { Membership } from "../../../prisma/generated/prisma";
 import { IMembershipStudentService } from "../../types/memberships.types";
 declare class MembershipStudentService implements IMembershipStudentService {
     private repository;

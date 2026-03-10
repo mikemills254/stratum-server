@@ -1,4 +1,4 @@
-import { Grade } from "../../generated/prisma";
+import { Grade } from "../../../prisma/generated/prisma";
 import { ICreateGrade } from "../../repositories/grade.repository";
 export declare class GradeService {
     private repository;

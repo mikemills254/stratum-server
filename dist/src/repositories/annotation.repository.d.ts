@@ -1,4 +1,4 @@
-import { Annotation } from "../generated/prisma";
+import { Annotation } from "../../prisma/generated/prisma";
 export interface ICreateAnnotation {
     answerId: string;
     teacherId: string;

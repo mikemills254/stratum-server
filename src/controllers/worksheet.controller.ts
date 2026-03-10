@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import WorksheetService from "../services/worksheet-service/worksheet.service";
 import { IWorksheetController, IWorksheetService } from "../types/worksheets.types";
 
@@ -14,7 +14,7 @@ class WorksheetController implements IWorksheetController {
             const user = req.user
             if (!user) return res.status(401).json({ message: "Unauthorised", success: false })
 
-            const { title, workbookId } = req.body
+            const { title, description, workbookId } = req.body
             if (!title || !workbookId) {
                 return res.status(400).json({
                     message: "Title and Workbook ID are required.",
@@ -22,7 +22,12 @@ class WorksheetController implements IWorksheetController {
                 })
             }
 
-            const worksheet = await this.service.createWorksheet(user.uid, req.body)
+            const worksheet = await this.service.createWorksheet(user.uid, {
+                title,
+                description,
+                workbookId
+            })
+
             return res.status(201).json({
                 message: "Worksheet created successfully.",
                 data: worksheet,
@@ -134,4 +139,4 @@ class WorksheetController implements IWorksheetController {
     }
 }
 
-export default WorksheetController
+export default WorksheetController;

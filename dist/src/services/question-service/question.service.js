@@ -3,16 +3,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../../generated/prisma/index");
+const prisma_1 = require("../../../prisma/generated/prisma");
 const question_repository_1 = __importDefault(require("../../repositories/question.repository"));
-const prisma_1 = require("../../utilities/prisma");
+const prisma_2 = require("../../utilities/prisma");
 class QuestionService {
     constructor() {
         this.repository = new question_repository_1.default();
     }
     async validateAccess(userId, worksheetId) {
         // Find the workbook this worksheet belongs to
-        const worksheet = await prisma_1.prisma.worksheet.findUnique({
+        const worksheet = await prisma_2.prisma.worksheet.findUnique({
             where: { id: worksheetId },
             include: { workbook: true }
         });
@@ -23,12 +23,12 @@ class QuestionService {
         if (workbook.directorId === userId)
             return;
         // Check if user is a teacher member of this workbook
-        const membership = await prisma_1.prisma.membership.findUnique({
+        const membership = await prisma_2.prisma.membership.findUnique({
             where: {
                 userId_workbookId: { userId, workbookId: workbook.id }
             }
         });
-        if (!membership || (membership.role !== index_1.Role.TEACHER && membership.role !== index_1.Role.DIRECTOR)) {
+        if (!membership || (membership.role !== prisma_1.Role.TEACHER && membership.role !== prisma_1.Role.DIRECTOR)) {
             throw new Error("Access denied. You do not have permission to manage questions in this workbook.");
         }
     }
@@ -84,18 +84,18 @@ class QuestionService {
     async getQuestionsByWorksheet(userId, worksheetId) {
         try {
             // Check if user has membership in the workbook containing this worksheet
-            const worksheet = await prisma_1.prisma.worksheet.findUnique({
+            const worksheet = await prisma_2.prisma.worksheet.findUnique({
                 where: { id: worksheetId }
             });
             if (!worksheet)
                 throw new Error("Worksheet not found.");
-            const workbook = await prisma_1.prisma.workbook.findUnique({
+            const workbook = await prisma_2.prisma.workbook.findUnique({
                 where: { id: worksheet.workbookId }
             });
             if (!workbook)
                 throw new Error("Workbook not found.");
             // Allow access if director or member
-            const membership = await prisma_1.prisma.membership.findUnique({
+            const membership = await prisma_2.prisma.membership.findUnique({
                 where: {
                     userId_workbookId: { userId, workbookId: workbook.id }
                 }

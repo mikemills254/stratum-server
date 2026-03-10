@@ -1,10 +1,9 @@
-import { Worksheet } from "../../generated/prisma";
+import { Worksheet } from "../../../prisma/generated/prisma";
 import { ICreateWorksheet, IUpdateWorksheet, IWorksheetService } from "../../types/worksheets.types";
 declare class WorksheetService implements IWorksheetService {
     private repository;
     constructor();
-    private validateDirector;
-    private validateMembership;
+    private validateAccess;
     createWorksheet(userId: string, data: ICreateWorksheet): Promise<Worksheet>;
     getWorksheet(userId: string, worksheetId: string): Promise<Worksheet>;
     editWorksheet(userId: string, worksheetId: string, data: IUpdateWorksheet): Promise<Worksheet>;

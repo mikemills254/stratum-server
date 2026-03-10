@@ -1,4 +1,4 @@
-import { Grade } from "../generated/prisma";
+import { Grade } from "../../prisma/generated/prisma";
 export interface ICreateGrade {
     answerId: string;
     teacherId: string;

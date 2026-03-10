@@ -46,4 +46,12 @@ router.delete("/:id", AuthService.verify, async (req: Request, res: Response, ne
     }
 })
 
+router.get("/:id/stats", AuthService.verify, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        await controller.handleGetWorkbookStats(req, res)
+    } catch (error) {
+        next(error)
+    }
+})
+
 export default router;

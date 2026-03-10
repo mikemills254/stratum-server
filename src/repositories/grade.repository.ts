@@ -20,6 +20,28 @@ export class GradeRepository {
         });
     }
 
+    async getById(id: string): Promise<Grade | null> {
+        return prisma.grade.findUnique({
+            where: { id },
+            include: {
+                teacher: true,
+                answer: {
+                    include: {
+                        question: {
+                            include: {
+                                worksheet: {
+                                    select: {
+                                        workbookId: true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
     async getByAnswer(answerId: string): Promise<Grade | null> {
         return prisma.grade.findUnique({
             where: { answerId },

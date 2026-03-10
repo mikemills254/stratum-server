@@ -19,6 +19,9 @@ import questionRoutes from "./routes/question.routes"
 import answerRoutes from "./routes/answer.routes"
 import gradeRoutes from "./routes/grade.routes"
 import annotationRoutes from "./routes/annotation.routes"
+import authRoutes from "./routes/auth.routes"
+import userRoutes from "./routes/user.routes"
+import auditLogRoutes from "./routes/audit-log.routes"
 
 app.use(morgan('combined'))
 app.use(cors())
@@ -32,6 +35,9 @@ app.use("/api/v1/question", questionRoutes)
 app.use("/api/v1/answer", answerRoutes)
 app.use("/api/v1/grade", gradeRoutes)
 app.use("/api/v1/annotation", annotationRoutes)
+app.use("/api/v1/auth", authRoutes)
+app.use("/api/v1/user", userRoutes)
+app.use("/api/v1/audit-log", auditLogRoutes)
 
 app.get('/', (req, res) => {
     res.json({ message: 'Stratum Server is running!' });

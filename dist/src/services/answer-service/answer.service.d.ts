@@ -1,4 +1,4 @@
-import { Answer } from "../../generated/prisma";
+import { Answer } from "../../../prisma/generated/prisma";
 import { ICreateAnswer } from "../../repositories/answer.repository";
 export declare class AnswerService {
     private repository;

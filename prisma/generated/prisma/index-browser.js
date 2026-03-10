@@ -124,7 +124,21 @@ exports.Prisma.UserScalarFieldEnum = {
   role: 'role',
   avatarUrl: 'avatarUrl',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  twoFactorCode: 'twoFactorCode',
+  twoFactorVerified: 'twoFactorVerified',
+  twoFactorCodeExpiry: 'twoFactorCodeExpiry'
+};
+
+exports.Prisma.AuditLogScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  title: 'title',
+  description: 'description',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  userId: 'userId',
+  workbookId: 'workbookId'
 };
 
 exports.Prisma.WorkbookScalarFieldEnum = {
@@ -149,6 +163,7 @@ exports.Prisma.MembershipScalarFieldEnum = {
 exports.Prisma.WorksheetScalarFieldEnum = {
   id: 'id',
   title: 'title',
+  description: 'description',
   order: 'order',
   isLocked: 'isLocked',
   yjsState: 'yjsState',
@@ -210,6 +225,11 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -219,10 +239,25 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
 exports.Role = exports.$Enums.Role = {
   DIRECTOR: 'DIRECTOR',
   TEACHER: 'TEACHER',
   STUDENT: 'STUDENT'
+};
+
+exports.AuditLogType = exports.$Enums.AuditLogType = {
+  SUBMISSION: 'SUBMISSION',
+  GRADING: 'GRADING',
+  ANNOTATION: 'ANNOTATION',
+  STREAK: 'STREAK',
+  WORKBOOK_UPDATE: 'WORKBOOK_UPDATE',
+  ENROLLMENT: 'ENROLLMENT'
 };
 
 exports.AnswerStatus = exports.$Enums.AnswerStatus = {
@@ -239,6 +274,7 @@ exports.GradeStatus = exports.$Enums.GradeStatus = {
 
 exports.Prisma.ModelName = {
   User: 'User',
+  AuditLog: 'AuditLog',
   Workbook: 'Workbook',
   Membership: 'Membership',
   Worksheet: 'Worksheet',

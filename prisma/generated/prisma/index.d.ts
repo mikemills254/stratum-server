@@ -19,6 +19,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = $Result.DefaultSelection<Prisma.$AuditLogPayload>
+/**
  * Model Workbook
  * 
  */
@@ -84,6 +89,18 @@ export const AnswerStatus: {
 
 export type AnswerStatus = (typeof AnswerStatus)[keyof typeof AnswerStatus]
 
+
+export const AuditLogType: {
+  SUBMISSION: 'SUBMISSION',
+  GRADING: 'GRADING',
+  ANNOTATION: 'ANNOTATION',
+  STREAK: 'STREAK',
+  WORKBOOK_UPDATE: 'WORKBOOK_UPDATE',
+  ENROLLMENT: 'ENROLLMENT'
+};
+
+export type AuditLogType = (typeof AuditLogType)[keyof typeof AuditLogType]
+
 }
 
 export type Role = $Enums.Role
@@ -97,6 +114,10 @@ export const GradeStatus: typeof $Enums.GradeStatus
 export type AnswerStatus = $Enums.AnswerStatus
 
 export const AnswerStatus: typeof $Enums.AnswerStatus
+
+export type AuditLogType = $Enums.AuditLogType
+
+export const AuditLogType: typeof $Enums.AuditLogType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -232,6 +253,16 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.auditLog`: Exposes CRUD operations for the **AuditLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AuditLogs
+    * const auditLogs = await prisma.auditLog.findMany()
+    * ```
+    */
+  get auditLog(): Prisma.AuditLogDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.workbook`: Exposes CRUD operations for the **Workbook** model.
@@ -743,6 +774,7 @@ export namespace Prisma {
 
   export const ModelName: {
     User: 'User',
+    AuditLog: 'AuditLog',
     Workbook: 'Workbook',
     Membership: 'Membership',
     Worksheet: 'Worksheet',
@@ -765,7 +797,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "user" | "workbook" | "membership" | "worksheet" | "question" | "answer" | "annotation" | "grade"
+      modelProps: "user" | "auditLog" | "workbook" | "membership" | "worksheet" | "question" | "answer" | "annotation" | "grade"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -840,6 +872,80 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      AuditLog: {
+        payload: Prisma.$AuditLogPayload<ExtArgs>
+        fields: Prisma.AuditLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AuditLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AuditLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          findFirst: {
+            args: Prisma.AuditLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AuditLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          findMany: {
+            args: Prisma.AuditLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>[]
+          }
+          create: {
+            args: Prisma.AuditLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          createMany: {
+            args: Prisma.AuditLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AuditLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>[]
+          }
+          delete: {
+            args: Prisma.AuditLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          update: {
+            args: Prisma.AuditLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.AuditLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AuditLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AuditLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.AuditLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AuditLogPayload>
+          }
+          aggregate: {
+            args: Prisma.AuditLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAuditLog>
+          }
+          groupBy: {
+            args: Prisma.AuditLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AuditLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AuditLogCountArgs<ExtArgs>
+            result: $Utils.Optional<AuditLogCountAggregateOutputType> | number
           }
         }
       }
@@ -1446,6 +1552,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
+    auditLog?: AuditLogOmit
     workbook?: WorkbookOmit
     membership?: MembershipOmit
     worksheet?: WorksheetOmit
@@ -1554,6 +1661,7 @@ export namespace Prisma {
     annotations: number
     grades: number
     approvals: number
+    auditLogs: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1564,6 +1672,7 @@ export namespace Prisma {
     annotations?: boolean | UserCountOutputTypeCountAnnotationsArgs
     grades?: boolean | UserCountOutputTypeCountGradesArgs
     approvals?: boolean | UserCountOutputTypeCountApprovalsArgs
+    auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
   }
 
   // Custom InputTypes
@@ -1626,6 +1735,13 @@ export namespace Prisma {
     where?: GradeWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAuditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuditLogWhereInput
+  }
+
 
   /**
    * Count Type WorkbookCountOutputType
@@ -1634,11 +1750,13 @@ export namespace Prisma {
   export type WorkbookCountOutputType = {
     worksheets: number
     memberships: number
+    auditLogs: number
   }
 
   export type WorkbookCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     worksheets?: boolean | WorkbookCountOutputTypeCountWorksheetsArgs
     memberships?: boolean | WorkbookCountOutputTypeCountMembershipsArgs
+    auditLogs?: boolean | WorkbookCountOutputTypeCountAuditLogsArgs
   }
 
   // Custom InputTypes
@@ -1664,6 +1782,13 @@ export namespace Prisma {
    */
   export type WorkbookCountOutputTypeCountMembershipsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MembershipWhereInput
+  }
+
+  /**
+   * WorkbookCountOutputType without action
+   */
+  export type WorkbookCountOutputTypeCountAuditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuditLogWhereInput
   }
 
 
@@ -1782,6 +1907,9 @@ export namespace Prisma {
     avatarUrl: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    twoFactorCode: string | null
+    twoFactorVerified: boolean | null
+    twoFactorCodeExpiry: Date | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -1792,6 +1920,9 @@ export namespace Prisma {
     avatarUrl: string | null
     createdAt: Date | null
     updatedAt: Date | null
+    twoFactorCode: string | null
+    twoFactorVerified: boolean | null
+    twoFactorCodeExpiry: Date | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -1802,6 +1933,9 @@ export namespace Prisma {
     avatarUrl: number
     createdAt: number
     updatedAt: number
+    twoFactorCode: number
+    twoFactorVerified: number
+    twoFactorCodeExpiry: number
     _all: number
   }
 
@@ -1814,6 +1948,9 @@ export namespace Prisma {
     avatarUrl?: true
     createdAt?: true
     updatedAt?: true
+    twoFactorCode?: true
+    twoFactorVerified?: true
+    twoFactorCodeExpiry?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -1824,6 +1961,9 @@ export namespace Prisma {
     avatarUrl?: true
     createdAt?: true
     updatedAt?: true
+    twoFactorCode?: true
+    twoFactorVerified?: true
+    twoFactorCodeExpiry?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -1834,6 +1974,9 @@ export namespace Prisma {
     avatarUrl?: true
     createdAt?: true
     updatedAt?: true
+    twoFactorCode?: true
+    twoFactorVerified?: true
+    twoFactorCodeExpiry?: true
     _all?: true
   }
 
@@ -1917,6 +2060,9 @@ export namespace Prisma {
     avatarUrl: string | null
     createdAt: Date
     updatedAt: Date
+    twoFactorCode: string | null
+    twoFactorVerified: boolean
+    twoFactorCodeExpiry: Date | null
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
@@ -1944,6 +2090,9 @@ export namespace Prisma {
     avatarUrl?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    twoFactorCode?: boolean
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: boolean
     workbooks?: boolean | User$workbooksArgs<ExtArgs>
     memberships?: boolean | User$membershipsArgs<ExtArgs>
     questions?: boolean | User$questionsArgs<ExtArgs>
@@ -1951,6 +2100,7 @@ export namespace Prisma {
     annotations?: boolean | User$annotationsArgs<ExtArgs>
     grades?: boolean | User$gradesArgs<ExtArgs>
     approvals?: boolean | User$approvalsArgs<ExtArgs>
+    auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -1962,6 +2112,9 @@ export namespace Prisma {
     avatarUrl?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    twoFactorCode?: boolean
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -1972,6 +2125,9 @@ export namespace Prisma {
     avatarUrl?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    twoFactorCode?: boolean
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: boolean
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectScalar = {
@@ -1982,9 +2138,12 @@ export namespace Prisma {
     avatarUrl?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    twoFactorCode?: boolean
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"uid" | "username" | "email" | "role" | "avatarUrl" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"uid" | "username" | "email" | "role" | "avatarUrl" | "createdAt" | "updatedAt" | "twoFactorCode" | "twoFactorVerified" | "twoFactorCodeExpiry", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workbooks?: boolean | User$workbooksArgs<ExtArgs>
     memberships?: boolean | User$membershipsArgs<ExtArgs>
@@ -1993,6 +2152,7 @@ export namespace Prisma {
     annotations?: boolean | User$annotationsArgs<ExtArgs>
     grades?: boolean | User$gradesArgs<ExtArgs>
     approvals?: boolean | User$approvalsArgs<ExtArgs>
+    auditLogs?: boolean | User$auditLogsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2008,6 +2168,7 @@ export namespace Prisma {
       annotations: Prisma.$AnnotationPayload<ExtArgs>[]
       grades: Prisma.$GradePayload<ExtArgs>[]
       approvals: Prisma.$GradePayload<ExtArgs>[]
+      auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       uid: string
@@ -2017,6 +2178,9 @@ export namespace Prisma {
       avatarUrl: string | null
       createdAt: Date
       updatedAt: Date
+      twoFactorCode: string | null
+      twoFactorVerified: boolean
+      twoFactorCodeExpiry: Date | null
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -2418,6 +2582,7 @@ export namespace Prisma {
     annotations<T extends User$annotationsArgs<ExtArgs> = {}>(args?: Subset<T, User$annotationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnotationPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     grades<T extends User$gradesArgs<ExtArgs> = {}>(args?: Subset<T, User$gradesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GradePayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     approvals<T extends User$approvalsArgs<ExtArgs> = {}>(args?: Subset<T, User$approvalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GradePayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    auditLogs<T extends User$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2454,6 +2619,9 @@ export namespace Prisma {
     readonly avatarUrl: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
+    readonly twoFactorCode: FieldRef<"User", 'String'>
+    readonly twoFactorVerified: FieldRef<"User", 'Boolean'>
+    readonly twoFactorCodeExpiry: FieldRef<"User", 'DateTime'>
   }
     
 
@@ -2998,6 +3166,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.auditLogs
+   */
+  export type User$auditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    where?: AuditLogWhereInput
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    cursor?: AuditLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3013,6 +3205,1114 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AuditLog
+   */
+
+  export type AggregateAuditLog = {
+    _count: AuditLogCountAggregateOutputType | null
+    _min: AuditLogMinAggregateOutputType | null
+    _max: AuditLogMaxAggregateOutputType | null
+  }
+
+  export type AuditLogMinAggregateOutputType = {
+    id: string | null
+    type: $Enums.AuditLogType | null
+    title: string | null
+    description: string | null
+    createdAt: Date | null
+    userId: string | null
+    workbookId: string | null
+  }
+
+  export type AuditLogMaxAggregateOutputType = {
+    id: string | null
+    type: $Enums.AuditLogType | null
+    title: string | null
+    description: string | null
+    createdAt: Date | null
+    userId: string | null
+    workbookId: string | null
+  }
+
+  export type AuditLogCountAggregateOutputType = {
+    id: number
+    type: number
+    title: number
+    description: number
+    metadata: number
+    createdAt: number
+    userId: number
+    workbookId: number
+    _all: number
+  }
+
+
+  export type AuditLogMinAggregateInputType = {
+    id?: true
+    type?: true
+    title?: true
+    description?: true
+    createdAt?: true
+    userId?: true
+    workbookId?: true
+  }
+
+  export type AuditLogMaxAggregateInputType = {
+    id?: true
+    type?: true
+    title?: true
+    description?: true
+    createdAt?: true
+    userId?: true
+    workbookId?: true
+  }
+
+  export type AuditLogCountAggregateInputType = {
+    id?: true
+    type?: true
+    title?: true
+    description?: true
+    metadata?: true
+    createdAt?: true
+    userId?: true
+    workbookId?: true
+    _all?: true
+  }
+
+  export type AuditLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AuditLog to aggregate.
+     */
+    where?: AuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditLogs to fetch.
+     */
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AuditLogs
+    **/
+    _count?: true | AuditLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AuditLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AuditLogMaxAggregateInputType
+  }
+
+  export type GetAuditLogAggregateType<T extends AuditLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateAuditLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAuditLog[P]>
+      : GetScalarType<T[P], AggregateAuditLog[P]>
+  }
+
+
+
+
+  export type AuditLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AuditLogWhereInput
+    orderBy?: AuditLogOrderByWithAggregationInput | AuditLogOrderByWithAggregationInput[]
+    by: AuditLogScalarFieldEnum[] | AuditLogScalarFieldEnum
+    having?: AuditLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AuditLogCountAggregateInputType | true
+    _min?: AuditLogMinAggregateInputType
+    _max?: AuditLogMaxAggregateInputType
+  }
+
+  export type AuditLogGroupByOutputType = {
+    id: string
+    type: $Enums.AuditLogType
+    title: string
+    description: string | null
+    metadata: JsonValue | null
+    createdAt: Date
+    userId: string
+    workbookId: string | null
+    _count: AuditLogCountAggregateOutputType | null
+    _min: AuditLogMinAggregateOutputType | null
+    _max: AuditLogMaxAggregateOutputType | null
+  }
+
+  type GetAuditLogGroupByPayload<T extends AuditLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AuditLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AuditLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AuditLogGroupByOutputType[P]>
+            : GetScalarType<T[P], AuditLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AuditLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    title?: boolean
+    description?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    userId?: boolean
+    workbookId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    workbook?: boolean | AuditLog$workbookArgs<ExtArgs>
+  }, ExtArgs["result"]["auditLog"]>
+
+  export type AuditLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    title?: boolean
+    description?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    userId?: boolean
+    workbookId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    workbook?: boolean | AuditLog$workbookArgs<ExtArgs>
+  }, ExtArgs["result"]["auditLog"]>
+
+  export type AuditLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    type?: boolean
+    title?: boolean
+    description?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    userId?: boolean
+    workbookId?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    workbook?: boolean | AuditLog$workbookArgs<ExtArgs>
+  }, ExtArgs["result"]["auditLog"]>
+
+  export type AuditLogSelectScalar = {
+    id?: boolean
+    type?: boolean
+    title?: boolean
+    description?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    userId?: boolean
+    workbookId?: boolean
+  }
+
+  export type AuditLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "title" | "description" | "metadata" | "createdAt" | "userId" | "workbookId", ExtArgs["result"]["auditLog"]>
+  export type AuditLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    workbook?: boolean | AuditLog$workbookArgs<ExtArgs>
+  }
+  export type AuditLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    workbook?: boolean | AuditLog$workbookArgs<ExtArgs>
+  }
+  export type AuditLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    workbook?: boolean | AuditLog$workbookArgs<ExtArgs>
+  }
+
+  export type $AuditLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AuditLog"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      workbook: Prisma.$WorkbookPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      type: $Enums.AuditLogType
+      title: string
+      description: string | null
+      metadata: Prisma.JsonValue | null
+      createdAt: Date
+      userId: string
+      workbookId: string | null
+    }, ExtArgs["result"]["auditLog"]>
+    composites: {}
+  }
+
+  type AuditLogGetPayload<S extends boolean | null | undefined | AuditLogDefaultArgs> = $Result.GetResult<Prisma.$AuditLogPayload, S>
+
+  type AuditLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AuditLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AuditLogCountAggregateInputType | true
+    }
+
+  export interface AuditLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AuditLog'], meta: { name: 'AuditLog' } }
+    /**
+     * Find zero or one AuditLog that matches the filter.
+     * @param {AuditLogFindUniqueArgs} args - Arguments to find a AuditLog
+     * @example
+     * // Get one AuditLog
+     * const auditLog = await prisma.auditLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AuditLogFindUniqueArgs>(args: SelectSubset<T, AuditLogFindUniqueArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findUnique", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find one AuditLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AuditLogFindUniqueOrThrowArgs} args - Arguments to find a AuditLog
+     * @example
+     * // Get one AuditLog
+     * const auditLog = await prisma.auditLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AuditLogFindUniqueOrThrowArgs>(args: SelectSubset<T, AuditLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first AuditLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogFindFirstArgs} args - Arguments to find a AuditLog
+     * @example
+     * // Get one AuditLog
+     * const auditLog = await prisma.auditLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AuditLogFindFirstArgs>(args?: SelectSubset<T, AuditLogFindFirstArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findFirst", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first AuditLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogFindFirstOrThrowArgs} args - Arguments to find a AuditLog
+     * @example
+     * // Get one AuditLog
+     * const auditLog = await prisma.auditLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AuditLogFindFirstOrThrowArgs>(args?: SelectSubset<T, AuditLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findFirstOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find zero or more AuditLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AuditLogs
+     * const auditLogs = await prisma.auditLog.findMany()
+     * 
+     * // Get first 10 AuditLogs
+     * const auditLogs = await prisma.auditLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const auditLogWithIdOnly = await prisma.auditLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AuditLogFindManyArgs>(args?: SelectSubset<T, AuditLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", ClientOptions>>
+
+    /**
+     * Create a AuditLog.
+     * @param {AuditLogCreateArgs} args - Arguments to create a AuditLog.
+     * @example
+     * // Create one AuditLog
+     * const AuditLog = await prisma.auditLog.create({
+     *   data: {
+     *     // ... data to create a AuditLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends AuditLogCreateArgs>(args: SelectSubset<T, AuditLogCreateArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "create", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Create many AuditLogs.
+     * @param {AuditLogCreateManyArgs} args - Arguments to create many AuditLogs.
+     * @example
+     * // Create many AuditLogs
+     * const auditLog = await prisma.auditLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AuditLogCreateManyArgs>(args?: SelectSubset<T, AuditLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AuditLogs and returns the data saved in the database.
+     * @param {AuditLogCreateManyAndReturnArgs} args - Arguments to create many AuditLogs.
+     * @example
+     * // Create many AuditLogs
+     * const auditLog = await prisma.auditLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AuditLogs and only return the `id`
+     * const auditLogWithIdOnly = await prisma.auditLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AuditLogCreateManyAndReturnArgs>(args?: SelectSubset<T, AuditLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "createManyAndReturn", ClientOptions>>
+
+    /**
+     * Delete a AuditLog.
+     * @param {AuditLogDeleteArgs} args - Arguments to delete one AuditLog.
+     * @example
+     * // Delete one AuditLog
+     * const AuditLog = await prisma.auditLog.delete({
+     *   where: {
+     *     // ... filter to delete one AuditLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AuditLogDeleteArgs>(args: SelectSubset<T, AuditLogDeleteArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "delete", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Update one AuditLog.
+     * @param {AuditLogUpdateArgs} args - Arguments to update one AuditLog.
+     * @example
+     * // Update one AuditLog
+     * const auditLog = await prisma.auditLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AuditLogUpdateArgs>(args: SelectSubset<T, AuditLogUpdateArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "update", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Delete zero or more AuditLogs.
+     * @param {AuditLogDeleteManyArgs} args - Arguments to filter AuditLogs to delete.
+     * @example
+     * // Delete a few AuditLogs
+     * const { count } = await prisma.auditLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AuditLogDeleteManyArgs>(args?: SelectSubset<T, AuditLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AuditLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AuditLogs
+     * const auditLog = await prisma.auditLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AuditLogUpdateManyArgs>(args: SelectSubset<T, AuditLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AuditLogs and returns the data updated in the database.
+     * @param {AuditLogUpdateManyAndReturnArgs} args - Arguments to update many AuditLogs.
+     * @example
+     * // Update many AuditLogs
+     * const auditLog = await prisma.auditLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AuditLogs and only return the `id`
+     * const auditLogWithIdOnly = await prisma.auditLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AuditLogUpdateManyAndReturnArgs>(args: SelectSubset<T, AuditLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "updateManyAndReturn", ClientOptions>>
+
+    /**
+     * Create or update one AuditLog.
+     * @param {AuditLogUpsertArgs} args - Arguments to update or create a AuditLog.
+     * @example
+     * // Update or create a AuditLog
+     * const auditLog = await prisma.auditLog.upsert({
+     *   create: {
+     *     // ... data to create a AuditLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AuditLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AuditLogUpsertArgs>(args: SelectSubset<T, AuditLogUpsertArgs<ExtArgs>>): Prisma__AuditLogClient<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "upsert", ClientOptions>, never, ExtArgs, ClientOptions>
+
+
+    /**
+     * Count the number of AuditLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogCountArgs} args - Arguments to filter AuditLogs to count.
+     * @example
+     * // Count the number of AuditLogs
+     * const count = await prisma.auditLog.count({
+     *   where: {
+     *     // ... the filter for the AuditLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends AuditLogCountArgs>(
+      args?: Subset<T, AuditLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AuditLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AuditLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AuditLogAggregateArgs>(args: Subset<T, AuditLogAggregateArgs>): Prisma.PrismaPromise<GetAuditLogAggregateType<T>>
+
+    /**
+     * Group by AuditLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AuditLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AuditLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AuditLogGroupByArgs['orderBy'] }
+        : { orderBy?: AuditLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AuditLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAuditLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AuditLog model
+   */
+  readonly fields: AuditLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AuditLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AuditLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    workbook<T extends AuditLog$workbookArgs<ExtArgs> = {}>(args?: Subset<T, AuditLog$workbookArgs<ExtArgs>>): Prisma__WorkbookClient<$Result.GetResult<Prisma.$WorkbookPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AuditLog model
+   */ 
+  interface AuditLogFieldRefs {
+    readonly id: FieldRef<"AuditLog", 'String'>
+    readonly type: FieldRef<"AuditLog", 'AuditLogType'>
+    readonly title: FieldRef<"AuditLog", 'String'>
+    readonly description: FieldRef<"AuditLog", 'String'>
+    readonly metadata: FieldRef<"AuditLog", 'Json'>
+    readonly createdAt: FieldRef<"AuditLog", 'DateTime'>
+    readonly userId: FieldRef<"AuditLog", 'String'>
+    readonly workbookId: FieldRef<"AuditLog", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AuditLog findUnique
+   */
+  export type AuditLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLog to fetch.
+     */
+    where: AuditLogWhereUniqueInput
+  }
+
+  /**
+   * AuditLog findUniqueOrThrow
+   */
+  export type AuditLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLog to fetch.
+     */
+    where: AuditLogWhereUniqueInput
+  }
+
+  /**
+   * AuditLog findFirst
+   */
+  export type AuditLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLog to fetch.
+     */
+    where?: AuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditLogs to fetch.
+     */
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AuditLogs.
+     */
+    cursor?: AuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuditLogs.
+     */
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * AuditLog findFirstOrThrow
+   */
+  export type AuditLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLog to fetch.
+     */
+    where?: AuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditLogs to fetch.
+     */
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AuditLogs.
+     */
+    cursor?: AuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AuditLogs.
+     */
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * AuditLog findMany
+   */
+  export type AuditLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter, which AuditLogs to fetch.
+     */
+    where?: AuditLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AuditLogs to fetch.
+     */
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AuditLogs.
+     */
+    cursor?: AuditLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AuditLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AuditLogs.
+     */
+    skip?: number
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
+  }
+
+  /**
+   * AuditLog create
+   */
+  export type AuditLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AuditLog.
+     */
+    data: XOR<AuditLogCreateInput, AuditLogUncheckedCreateInput>
+  }
+
+  /**
+   * AuditLog createMany
+   */
+  export type AuditLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AuditLogs.
+     */
+    data: AuditLogCreateManyInput | AuditLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AuditLog createManyAndReturn
+   */
+  export type AuditLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many AuditLogs.
+     */
+    data: AuditLogCreateManyInput | AuditLogCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AuditLog update
+   */
+  export type AuditLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AuditLog.
+     */
+    data: XOR<AuditLogUpdateInput, AuditLogUncheckedUpdateInput>
+    /**
+     * Choose, which AuditLog to update.
+     */
+    where: AuditLogWhereUniqueInput
+  }
+
+  /**
+   * AuditLog updateMany
+   */
+  export type AuditLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AuditLogs.
+     */
+    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyInput>
+    /**
+     * Filter which AuditLogs to update
+     */
+    where?: AuditLogWhereInput
+  }
+
+  /**
+   * AuditLog updateManyAndReturn
+   */
+  export type AuditLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * The data used to update AuditLogs.
+     */
+    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyInput>
+    /**
+     * Filter which AuditLogs to update
+     */
+    where?: AuditLogWhereInput
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AuditLog upsert
+   */
+  export type AuditLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AuditLog to update in case it exists.
+     */
+    where: AuditLogWhereUniqueInput
+    /**
+     * In case the AuditLog found by the `where` argument doesn't exist, create a new AuditLog with this data.
+     */
+    create: XOR<AuditLogCreateInput, AuditLogUncheckedCreateInput>
+    /**
+     * In case the AuditLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AuditLogUpdateInput, AuditLogUncheckedUpdateInput>
+  }
+
+  /**
+   * AuditLog delete
+   */
+  export type AuditLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    /**
+     * Filter which AuditLog to delete.
+     */
+    where: AuditLogWhereUniqueInput
+  }
+
+  /**
+   * AuditLog deleteMany
+   */
+  export type AuditLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AuditLogs to delete
+     */
+    where?: AuditLogWhereInput
+  }
+
+  /**
+   * AuditLog.workbook
+   */
+  export type AuditLog$workbookArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Workbook
+     */
+    select?: WorkbookSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Workbook
+     */
+    omit?: WorkbookOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: WorkbookInclude<ExtArgs> | null
+    where?: WorkbookWhereInput
+  }
+
+  /**
+   * AuditLog without action
+   */
+  export type AuditLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
   }
 
 
@@ -3207,6 +4507,7 @@ export namespace Prisma {
     director?: boolean | UserDefaultArgs<ExtArgs>
     worksheets?: boolean | Workbook$worksheetsArgs<ExtArgs>
     memberships?: boolean | Workbook$membershipsArgs<ExtArgs>
+    auditLogs?: boolean | Workbook$auditLogsArgs<ExtArgs>
     _count?: boolean | WorkbookCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["workbook"]>
 
@@ -3250,6 +4551,7 @@ export namespace Prisma {
     director?: boolean | UserDefaultArgs<ExtArgs>
     worksheets?: boolean | Workbook$worksheetsArgs<ExtArgs>
     memberships?: boolean | Workbook$membershipsArgs<ExtArgs>
+    auditLogs?: boolean | Workbook$auditLogsArgs<ExtArgs>
     _count?: boolean | WorkbookCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type WorkbookIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3265,6 +4567,7 @@ export namespace Prisma {
       director: Prisma.$UserPayload<ExtArgs>
       worksheets: Prisma.$WorksheetPayload<ExtArgs>[]
       memberships: Prisma.$MembershipPayload<ExtArgs>[]
+      auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3672,6 +4975,7 @@ export namespace Prisma {
     director<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
     worksheets<T extends Workbook$worksheetsArgs<ExtArgs> = {}>(args?: Subset<T, Workbook$worksheetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WorksheetPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     memberships<T extends Workbook$membershipsArgs<ExtArgs> = {}>(args?: Subset<T, Workbook$membershipsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MembershipPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    auditLogs<T extends Workbook$auditLogsArgs<ExtArgs> = {}>(args?: Subset<T, Workbook$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4138,6 +5442,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MembershipScalarFieldEnum | MembershipScalarFieldEnum[]
+  }
+
+  /**
+   * Workbook.auditLogs
+   */
+  export type Workbook$auditLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AuditLog
+     */
+    select?: AuditLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AuditLog
+     */
+    omit?: AuditLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AuditLogInclude<ExtArgs> | null
+    where?: AuditLogWhereInput
+    orderBy?: AuditLogOrderByWithRelationInput | AuditLogOrderByWithRelationInput[]
+    cursor?: AuditLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AuditLogScalarFieldEnum | AuditLogScalarFieldEnum[]
   }
 
   /**
@@ -5236,6 +6564,7 @@ export namespace Prisma {
   export type WorksheetMinAggregateOutputType = {
     id: string | null
     title: string | null
+    description: string | null
     order: number | null
     isLocked: boolean | null
     yjsState: Uint8Array | null
@@ -5247,6 +6576,7 @@ export namespace Prisma {
   export type WorksheetMaxAggregateOutputType = {
     id: string | null
     title: string | null
+    description: string | null
     order: number | null
     isLocked: boolean | null
     yjsState: Uint8Array | null
@@ -5258,6 +6588,7 @@ export namespace Prisma {
   export type WorksheetCountAggregateOutputType = {
     id: number
     title: number
+    description: number
     order: number
     isLocked: number
     yjsState: number
@@ -5279,6 +6610,7 @@ export namespace Prisma {
   export type WorksheetMinAggregateInputType = {
     id?: true
     title?: true
+    description?: true
     order?: true
     isLocked?: true
     yjsState?: true
@@ -5290,6 +6622,7 @@ export namespace Prisma {
   export type WorksheetMaxAggregateInputType = {
     id?: true
     title?: true
+    description?: true
     order?: true
     isLocked?: true
     yjsState?: true
@@ -5301,6 +6634,7 @@ export namespace Prisma {
   export type WorksheetCountAggregateInputType = {
     id?: true
     title?: true
+    description?: true
     order?: true
     isLocked?: true
     yjsState?: true
@@ -5399,6 +6733,7 @@ export namespace Prisma {
   export type WorksheetGroupByOutputType = {
     id: string
     title: string
+    description: string
     order: number
     isLocked: boolean
     yjsState: Uint8Array | null
@@ -5429,6 +6764,7 @@ export namespace Prisma {
   export type WorksheetSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
+    description?: boolean
     order?: boolean
     isLocked?: boolean
     yjsState?: boolean
@@ -5443,6 +6779,7 @@ export namespace Prisma {
   export type WorksheetSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
+    description?: boolean
     order?: boolean
     isLocked?: boolean
     yjsState?: boolean
@@ -5455,6 +6792,7 @@ export namespace Prisma {
   export type WorksheetSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     title?: boolean
+    description?: boolean
     order?: boolean
     isLocked?: boolean
     yjsState?: boolean
@@ -5467,6 +6805,7 @@ export namespace Prisma {
   export type WorksheetSelectScalar = {
     id?: boolean
     title?: boolean
+    description?: boolean
     order?: boolean
     isLocked?: boolean
     yjsState?: boolean
@@ -5475,7 +6814,7 @@ export namespace Prisma {
     workbookId?: boolean
   }
 
-  export type WorksheetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "order" | "isLocked" | "yjsState" | "createdAt" | "updatedAt" | "workbookId", ExtArgs["result"]["worksheet"]>
+  export type WorksheetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "order" | "isLocked" | "yjsState" | "createdAt" | "updatedAt" | "workbookId", ExtArgs["result"]["worksheet"]>
   export type WorksheetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workbook?: boolean | WorkbookDefaultArgs<ExtArgs>
     questions?: boolean | Worksheet$questionsArgs<ExtArgs>
@@ -5497,6 +6836,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       title: string
+      description: string
       order: number
       isLocked: boolean
       yjsState: Uint8Array | null
@@ -5930,6 +7270,7 @@ export namespace Prisma {
   interface WorksheetFieldRefs {
     readonly id: FieldRef<"Worksheet", 'String'>
     readonly title: FieldRef<"Worksheet", 'String'>
+    readonly description: FieldRef<"Worksheet", 'String'>
     readonly order: FieldRef<"Worksheet", 'Int'>
     readonly isLocked: FieldRef<"Worksheet", 'Boolean'>
     readonly yjsState: FieldRef<"Worksheet", 'Bytes'>
@@ -10989,10 +12330,27 @@ export namespace Prisma {
     role: 'role',
     avatarUrl: 'avatarUrl',
     createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    twoFactorCode: 'twoFactorCode',
+    twoFactorVerified: 'twoFactorVerified',
+    twoFactorCodeExpiry: 'twoFactorCodeExpiry'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const AuditLogScalarFieldEnum: {
+    id: 'id',
+    type: 'type',
+    title: 'title',
+    description: 'description',
+    metadata: 'metadata',
+    createdAt: 'createdAt',
+    userId: 'userId',
+    workbookId: 'workbookId'
+  };
+
+  export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
 
 
   export const WorkbookScalarFieldEnum: {
@@ -11023,6 +12381,7 @@ export namespace Prisma {
   export const WorksheetScalarFieldEnum: {
     id: 'id',
     title: 'title',
+    description: 'description',
     order: 'order',
     isLocked: 'isLocked',
     yjsState: 'yjsState',
@@ -11102,6 +12461,14 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
@@ -11116,6 +12483,15 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -11169,6 +12545,27 @@ export namespace Prisma {
    * Reference to a field of type 'Boolean'
    */
   export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
+   * Reference to a field of type 'AuditLogType'
+   */
+  export type EnumAuditLogTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuditLogType'>
+    
+
+
+  /**
+   * Reference to a field of type 'AuditLogType[]'
+   */
+  export type ListEnumAuditLogTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuditLogType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
     
 
 
@@ -11256,6 +12653,9 @@ export namespace Prisma {
     avatarUrl?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    twoFactorCode?: StringNullableFilter<"User"> | string | null
+    twoFactorVerified?: BoolFilter<"User"> | boolean
+    twoFactorCodeExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     workbooks?: WorkbookListRelationFilter
     memberships?: MembershipListRelationFilter
     questions?: QuestionListRelationFilter
@@ -11263,6 +12663,7 @@ export namespace Prisma {
     annotations?: AnnotationListRelationFilter
     grades?: GradeListRelationFilter
     approvals?: GradeListRelationFilter
+    auditLogs?: AuditLogListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -11273,6 +12674,9 @@ export namespace Prisma {
     avatarUrl?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    twoFactorCode?: SortOrderInput | SortOrder
+    twoFactorVerified?: SortOrder
+    twoFactorCodeExpiry?: SortOrderInput | SortOrder
     workbooks?: WorkbookOrderByRelationAggregateInput
     memberships?: MembershipOrderByRelationAggregateInput
     questions?: QuestionOrderByRelationAggregateInput
@@ -11280,6 +12684,7 @@ export namespace Prisma {
     annotations?: AnnotationOrderByRelationAggregateInput
     grades?: GradeOrderByRelationAggregateInput
     approvals?: GradeOrderByRelationAggregateInput
+    auditLogs?: AuditLogOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -11293,6 +12698,9 @@ export namespace Prisma {
     avatarUrl?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    twoFactorCode?: StringNullableFilter<"User"> | string | null
+    twoFactorVerified?: BoolFilter<"User"> | boolean
+    twoFactorCodeExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     workbooks?: WorkbookListRelationFilter
     memberships?: MembershipListRelationFilter
     questions?: QuestionListRelationFilter
@@ -11300,6 +12708,7 @@ export namespace Prisma {
     annotations?: AnnotationListRelationFilter
     grades?: GradeListRelationFilter
     approvals?: GradeListRelationFilter
+    auditLogs?: AuditLogListRelationFilter
   }, "uid" | "username" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -11310,6 +12719,9 @@ export namespace Prisma {
     avatarUrl?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    twoFactorCode?: SortOrderInput | SortOrder
+    twoFactorVerified?: SortOrder
+    twoFactorCodeExpiry?: SortOrderInput | SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
@@ -11326,6 +12738,82 @@ export namespace Prisma {
     avatarUrl?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    twoFactorCode?: StringNullableWithAggregatesFilter<"User"> | string | null
+    twoFactorVerified?: BoolWithAggregatesFilter<"User"> | boolean
+    twoFactorCodeExpiry?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+  }
+
+  export type AuditLogWhereInput = {
+    AND?: AuditLogWhereInput | AuditLogWhereInput[]
+    OR?: AuditLogWhereInput[]
+    NOT?: AuditLogWhereInput | AuditLogWhereInput[]
+    id?: StringFilter<"AuditLog"> | string
+    type?: EnumAuditLogTypeFilter<"AuditLog"> | $Enums.AuditLogType
+    title?: StringFilter<"AuditLog"> | string
+    description?: StringNullableFilter<"AuditLog"> | string | null
+    metadata?: JsonNullableFilter<"AuditLog">
+    createdAt?: DateTimeFilter<"AuditLog"> | Date | string
+    userId?: StringFilter<"AuditLog"> | string
+    workbookId?: StringNullableFilter<"AuditLog"> | string | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    workbook?: XOR<WorkbookNullableScalarRelationFilter, WorkbookWhereInput> | null
+  }
+
+  export type AuditLogOrderByWithRelationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    userId?: SortOrder
+    workbookId?: SortOrderInput | SortOrder
+    user?: UserOrderByWithRelationInput
+    workbook?: WorkbookOrderByWithRelationInput
+  }
+
+  export type AuditLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AuditLogWhereInput | AuditLogWhereInput[]
+    OR?: AuditLogWhereInput[]
+    NOT?: AuditLogWhereInput | AuditLogWhereInput[]
+    type?: EnumAuditLogTypeFilter<"AuditLog"> | $Enums.AuditLogType
+    title?: StringFilter<"AuditLog"> | string
+    description?: StringNullableFilter<"AuditLog"> | string | null
+    metadata?: JsonNullableFilter<"AuditLog">
+    createdAt?: DateTimeFilter<"AuditLog"> | Date | string
+    userId?: StringFilter<"AuditLog"> | string
+    workbookId?: StringNullableFilter<"AuditLog"> | string | null
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    workbook?: XOR<WorkbookNullableScalarRelationFilter, WorkbookWhereInput> | null
+  }, "id">
+
+  export type AuditLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    userId?: SortOrder
+    workbookId?: SortOrderInput | SortOrder
+    _count?: AuditLogCountOrderByAggregateInput
+    _max?: AuditLogMaxOrderByAggregateInput
+    _min?: AuditLogMinOrderByAggregateInput
+  }
+
+  export type AuditLogScalarWhereWithAggregatesInput = {
+    AND?: AuditLogScalarWhereWithAggregatesInput | AuditLogScalarWhereWithAggregatesInput[]
+    OR?: AuditLogScalarWhereWithAggregatesInput[]
+    NOT?: AuditLogScalarWhereWithAggregatesInput | AuditLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AuditLog"> | string
+    type?: EnumAuditLogTypeWithAggregatesFilter<"AuditLog"> | $Enums.AuditLogType
+    title?: StringWithAggregatesFilter<"AuditLog"> | string
+    description?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
+    metadata?: JsonNullableWithAggregatesFilter<"AuditLog">
+    createdAt?: DateTimeWithAggregatesFilter<"AuditLog"> | Date | string
+    userId?: StringWithAggregatesFilter<"AuditLog"> | string
+    workbookId?: StringNullableWithAggregatesFilter<"AuditLog"> | string | null
   }
 
   export type WorkbookWhereInput = {
@@ -11343,6 +12831,7 @@ export namespace Prisma {
     director?: XOR<UserScalarRelationFilter, UserWhereInput>
     worksheets?: WorksheetListRelationFilter
     memberships?: MembershipListRelationFilter
+    auditLogs?: AuditLogListRelationFilter
   }
 
   export type WorkbookOrderByWithRelationInput = {
@@ -11357,6 +12846,7 @@ export namespace Prisma {
     director?: UserOrderByWithRelationInput
     worksheets?: WorksheetOrderByRelationAggregateInput
     memberships?: MembershipOrderByRelationAggregateInput
+    auditLogs?: AuditLogOrderByRelationAggregateInput
   }
 
   export type WorkbookWhereUniqueInput = Prisma.AtLeast<{
@@ -11374,6 +12864,7 @@ export namespace Prisma {
     director?: XOR<UserScalarRelationFilter, UserWhereInput>
     worksheets?: WorksheetListRelationFilter
     memberships?: MembershipListRelationFilter
+    auditLogs?: AuditLogListRelationFilter
   }, "id">
 
   export type WorkbookOrderByWithAggregationInput = {
@@ -11469,6 +12960,7 @@ export namespace Prisma {
     NOT?: WorksheetWhereInput | WorksheetWhereInput[]
     id?: StringFilter<"Worksheet"> | string
     title?: StringFilter<"Worksheet"> | string
+    description?: StringFilter<"Worksheet"> | string
     order?: IntFilter<"Worksheet"> | number
     isLocked?: BoolFilter<"Worksheet"> | boolean
     yjsState?: BytesNullableFilter<"Worksheet"> | Uint8Array | null
@@ -11482,6 +12974,7 @@ export namespace Prisma {
   export type WorksheetOrderByWithRelationInput = {
     id?: SortOrder
     title?: SortOrder
+    description?: SortOrder
     order?: SortOrder
     isLocked?: SortOrder
     yjsState?: SortOrderInput | SortOrder
@@ -11498,6 +12991,7 @@ export namespace Prisma {
     OR?: WorksheetWhereInput[]
     NOT?: WorksheetWhereInput | WorksheetWhereInput[]
     title?: StringFilter<"Worksheet"> | string
+    description?: StringFilter<"Worksheet"> | string
     order?: IntFilter<"Worksheet"> | number
     isLocked?: BoolFilter<"Worksheet"> | boolean
     yjsState?: BytesNullableFilter<"Worksheet"> | Uint8Array | null
@@ -11511,6 +13005,7 @@ export namespace Prisma {
   export type WorksheetOrderByWithAggregationInput = {
     id?: SortOrder
     title?: SortOrder
+    description?: SortOrder
     order?: SortOrder
     isLocked?: SortOrder
     yjsState?: SortOrderInput | SortOrder
@@ -11530,6 +13025,7 @@ export namespace Prisma {
     NOT?: WorksheetScalarWhereWithAggregatesInput | WorksheetScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Worksheet"> | string
     title?: StringWithAggregatesFilter<"Worksheet"> | string
+    description?: StringWithAggregatesFilter<"Worksheet"> | string
     order?: IntWithAggregatesFilter<"Worksheet"> | number
     isLocked?: BoolWithAggregatesFilter<"Worksheet"> | boolean
     yjsState?: BytesNullableWithAggregatesFilter<"Worksheet"> | Uint8Array | null
@@ -11875,6 +13371,9 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    twoFactorCode?: string | null
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: Date | string | null
     workbooks?: WorkbookCreateNestedManyWithoutDirectorInput
     memberships?: MembershipCreateNestedManyWithoutUserInput
     questions?: QuestionCreateNestedManyWithoutTeacherInput
@@ -11882,6 +13381,7 @@ export namespace Prisma {
     annotations?: AnnotationCreateNestedManyWithoutTeacherInput
     grades?: GradeCreateNestedManyWithoutTeacherInput
     approvals?: GradeCreateNestedManyWithoutApprovedByInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -11892,6 +13392,9 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    twoFactorCode?: string | null
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: Date | string | null
     workbooks?: WorkbookUncheckedCreateNestedManyWithoutDirectorInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
     questions?: QuestionUncheckedCreateNestedManyWithoutTeacherInput
@@ -11899,6 +13402,7 @@ export namespace Prisma {
     annotations?: AnnotationUncheckedCreateNestedManyWithoutTeacherInput
     grades?: GradeUncheckedCreateNestedManyWithoutTeacherInput
     approvals?: GradeUncheckedCreateNestedManyWithoutApprovedByInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -11909,6 +13413,9 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorCodeExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     workbooks?: WorkbookUpdateManyWithoutDirectorNestedInput
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     questions?: QuestionUpdateManyWithoutTeacherNestedInput
@@ -11916,6 +13423,7 @@ export namespace Prisma {
     annotations?: AnnotationUpdateManyWithoutTeacherNestedInput
     grades?: GradeUpdateManyWithoutTeacherNestedInput
     approvals?: GradeUpdateManyWithoutApprovedByNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -11926,6 +13434,9 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorCodeExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     workbooks?: WorkbookUncheckedUpdateManyWithoutDirectorNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
     questions?: QuestionUncheckedUpdateManyWithoutTeacherNestedInput
@@ -11933,6 +13444,7 @@ export namespace Prisma {
     annotations?: AnnotationUncheckedUpdateManyWithoutTeacherNestedInput
     grades?: GradeUncheckedUpdateManyWithoutTeacherNestedInput
     approvals?: GradeUncheckedUpdateManyWithoutApprovedByNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -11943,6 +13455,9 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    twoFactorCode?: string | null
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: Date | string | null
   }
 
   export type UserUpdateManyMutationInput = {
@@ -11953,6 +13468,9 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorCodeExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -11963,6 +13481,84 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorCodeExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type AuditLogCreateInput = {
+    id?: string
+    type: $Enums.AuditLogType
+    title: string
+    description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutAuditLogsInput
+    workbook?: WorkbookCreateNestedOneWithoutAuditLogsInput
+  }
+
+  export type AuditLogUncheckedCreateInput = {
+    id?: string
+    type: $Enums.AuditLogType
+    title: string
+    description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    userId: string
+    workbookId?: string | null
+  }
+
+  export type AuditLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAuditLogTypeFieldUpdateOperationsInput | $Enums.AuditLogType
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAuditLogsNestedInput
+    workbook?: WorkbookUpdateOneWithoutAuditLogsNestedInput
+  }
+
+  export type AuditLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAuditLogTypeFieldUpdateOperationsInput | $Enums.AuditLogType
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    workbookId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AuditLogCreateManyInput = {
+    id?: string
+    type: $Enums.AuditLogType
+    title: string
+    description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    userId: string
+    workbookId?: string | null
+  }
+
+  export type AuditLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAuditLogTypeFieldUpdateOperationsInput | $Enums.AuditLogType
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AuditLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAuditLogTypeFieldUpdateOperationsInput | $Enums.AuditLogType
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+    workbookId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type WorkbookCreateInput = {
@@ -11976,6 +13572,7 @@ export namespace Prisma {
     director: UserCreateNestedOneWithoutWorkbooksInput
     worksheets?: WorksheetCreateNestedManyWithoutWorkbookInput
     memberships?: MembershipCreateNestedManyWithoutWorkbookInput
+    auditLogs?: AuditLogCreateNestedManyWithoutWorkbookInput
   }
 
   export type WorkbookUncheckedCreateInput = {
@@ -11989,6 +13586,7 @@ export namespace Prisma {
     directorId: string
     worksheets?: WorksheetUncheckedCreateNestedManyWithoutWorkbookInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutWorkbookInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutWorkbookInput
   }
 
   export type WorkbookUpdateInput = {
@@ -12002,6 +13600,7 @@ export namespace Prisma {
     director?: UserUpdateOneRequiredWithoutWorkbooksNestedInput
     worksheets?: WorksheetUpdateManyWithoutWorkbookNestedInput
     memberships?: MembershipUpdateManyWithoutWorkbookNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutWorkbookNestedInput
   }
 
   export type WorkbookUncheckedUpdateInput = {
@@ -12015,6 +13614,7 @@ export namespace Prisma {
     directorId?: StringFieldUpdateOperationsInput | string
     worksheets?: WorksheetUncheckedUpdateManyWithoutWorkbookNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutWorkbookNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutWorkbookNestedInput
   }
 
   export type WorkbookCreateManyInput = {
@@ -12106,6 +13706,7 @@ export namespace Prisma {
   export type WorksheetCreateInput = {
     id?: string
     title: string
+    description: string
     order?: number
     isLocked?: boolean
     yjsState?: Uint8Array | null
@@ -12118,6 +13719,7 @@ export namespace Prisma {
   export type WorksheetUncheckedCreateInput = {
     id?: string
     title: string
+    description: string
     order?: number
     isLocked?: boolean
     yjsState?: Uint8Array | null
@@ -12130,6 +13732,7 @@ export namespace Prisma {
   export type WorksheetUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     yjsState?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
@@ -12142,6 +13745,7 @@ export namespace Prisma {
   export type WorksheetUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     yjsState?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
@@ -12154,6 +13758,7 @@ export namespace Prisma {
   export type WorksheetCreateManyInput = {
     id?: string
     title: string
+    description: string
     order?: number
     isLocked?: boolean
     yjsState?: Uint8Array | null
@@ -12165,6 +13770,7 @@ export namespace Prisma {
   export type WorksheetUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     yjsState?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
@@ -12175,6 +13781,7 @@ export namespace Prisma {
   export type WorksheetUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     yjsState?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
@@ -12570,6 +14177,22 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type WorkbookListRelationFilter = {
     every?: WorkbookWhereInput
     some?: WorkbookWhereInput
@@ -12606,6 +14229,12 @@ export namespace Prisma {
     none?: GradeWhereInput
   }
 
+  export type AuditLogListRelationFilter = {
+    every?: AuditLogWhereInput
+    some?: AuditLogWhereInput
+    none?: AuditLogWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -12635,6 +14264,10 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type AuditLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     uid?: SortOrder
     username?: SortOrder
@@ -12643,6 +14276,9 @@ export namespace Prisma {
     avatarUrl?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    twoFactorCode?: SortOrder
+    twoFactorVerified?: SortOrder
+    twoFactorCodeExpiry?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -12653,6 +14289,9 @@ export namespace Prisma {
     avatarUrl?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    twoFactorCode?: SortOrder
+    twoFactorVerified?: SortOrder
+    twoFactorCodeExpiry?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -12663,6 +14302,9 @@ export namespace Prisma {
     avatarUrl?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    twoFactorCode?: SortOrder
+    twoFactorVerified?: SortOrder
+    twoFactorCodeExpiry?: SortOrder
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -12725,14 +14367,131 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
+  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type EnumAuditLogTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AuditLogType | EnumAuditLogTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AuditLogType[] | ListEnumAuditLogTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AuditLogType[] | ListEnumAuditLogTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAuditLogTypeFilter<$PrismaModel> | $Enums.AuditLogType
+  }
+  export type JsonNullableFilter<$PrismaModel = never> = 
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
+  }
+
+  export type WorkbookNullableScalarRelationFilter = {
+    is?: WorkbookWhereInput | null
+    isNot?: WorkbookWhereInput | null
+  }
+
+  export type AuditLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    metadata?: SortOrder
+    createdAt?: SortOrder
+    userId?: SortOrder
+    workbookId?: SortOrder
+  }
+
+  export type AuditLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    userId?: SortOrder
+    workbookId?: SortOrder
+  }
+
+  export type AuditLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    type?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    createdAt?: SortOrder
+    userId?: SortOrder
+    workbookId?: SortOrder
+  }
+
+  export type EnumAuditLogTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AuditLogType | EnumAuditLogTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AuditLogType[] | ListEnumAuditLogTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AuditLogType[] | ListEnumAuditLogTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAuditLogTypeWithAggregatesFilter<$PrismaModel> | $Enums.AuditLogType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAuditLogTypeFilter<$PrismaModel>
+    _max?: NestedEnumAuditLogTypeFilter<$PrismaModel>
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> = 
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
 
   export type WorksheetListRelationFilter = {
@@ -12776,14 +14535,6 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     directorId?: SortOrder
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type WorkbookScalarRelationFilter = {
@@ -12841,6 +14592,7 @@ export namespace Prisma {
   export type WorksheetCountOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
+    description?: SortOrder
     order?: SortOrder
     isLocked?: SortOrder
     yjsState?: SortOrder
@@ -12856,6 +14608,7 @@ export namespace Prisma {
   export type WorksheetMaxOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
+    description?: SortOrder
     order?: SortOrder
     isLocked?: SortOrder
     yjsState?: SortOrder
@@ -12867,6 +14620,7 @@ export namespace Prisma {
   export type WorksheetMinOrderByAggregateInput = {
     id?: SortOrder
     title?: SortOrder
+    description?: SortOrder
     order?: SortOrder
     isLocked?: SortOrder
     yjsState?: SortOrder
@@ -12958,17 +14712,6 @@ export namespace Prisma {
     not?: NestedEnumAnswerStatusFilter<$PrismaModel> | $Enums.AnswerStatus
   }
 
-  export type DateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type QuestionScalarRelationFilter = {
     is?: QuestionWhereInput
     isNot?: QuestionWhereInput
@@ -13028,20 +14771,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumAnswerStatusFilter<$PrismaModel>
     _max?: NestedEnumAnswerStatusFilter<$PrismaModel>
-  }
-
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type AnswerScalarRelationFilter = {
@@ -13205,6 +14934,13 @@ export namespace Prisma {
     connect?: GradeWhereUniqueInput | GradeWhereUniqueInput[]
   }
 
+  export type AuditLogCreateNestedManyWithoutUserInput = {
+    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
+    createMany?: AuditLogCreateManyUserInputEnvelope
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+  }
+
   export type WorkbookUncheckedCreateNestedManyWithoutDirectorInput = {
     create?: XOR<WorkbookCreateWithoutDirectorInput, WorkbookUncheckedCreateWithoutDirectorInput> | WorkbookCreateWithoutDirectorInput[] | WorkbookUncheckedCreateWithoutDirectorInput[]
     connectOrCreate?: WorkbookCreateOrConnectWithoutDirectorInput | WorkbookCreateOrConnectWithoutDirectorInput[]
@@ -13254,6 +14990,13 @@ export namespace Prisma {
     connect?: GradeWhereUniqueInput | GradeWhereUniqueInput[]
   }
 
+  export type AuditLogUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
+    createMany?: AuditLogCreateManyUserInputEnvelope
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -13268,6 +15011,14 @@ export namespace Prisma {
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type WorkbookUpdateManyWithoutDirectorNestedInput = {
@@ -13368,6 +15119,20 @@ export namespace Prisma {
     deleteMany?: GradeScalarWhereInput | GradeScalarWhereInput[]
   }
 
+  export type AuditLogUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
+    upsert?: AuditLogUpsertWithWhereUniqueWithoutUserInput | AuditLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AuditLogCreateManyUserInputEnvelope
+    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    update?: AuditLogUpdateWithWhereUniqueWithoutUserInput | AuditLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AuditLogUpdateManyWithWhereWithoutUserInput | AuditLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+  }
+
   export type WorkbookUncheckedUpdateManyWithoutDirectorNestedInput = {
     create?: XOR<WorkbookCreateWithoutDirectorInput, WorkbookUncheckedCreateWithoutDirectorInput> | WorkbookCreateWithoutDirectorInput[] | WorkbookUncheckedCreateWithoutDirectorInput[]
     connectOrCreate?: WorkbookCreateOrConnectWithoutDirectorInput | WorkbookCreateOrConnectWithoutDirectorInput[]
@@ -13466,6 +15231,54 @@ export namespace Prisma {
     deleteMany?: GradeScalarWhereInput | GradeScalarWhereInput[]
   }
 
+  export type AuditLogUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput> | AuditLogCreateWithoutUserInput[] | AuditLogUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutUserInput | AuditLogCreateOrConnectWithoutUserInput[]
+    upsert?: AuditLogUpsertWithWhereUniqueWithoutUserInput | AuditLogUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AuditLogCreateManyUserInputEnvelope
+    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    update?: AuditLogUpdateWithWhereUniqueWithoutUserInput | AuditLogUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AuditLogUpdateManyWithWhereWithoutUserInput | AuditLogUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutAuditLogsInput = {
+    create?: XOR<UserCreateWithoutAuditLogsInput, UserUncheckedCreateWithoutAuditLogsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAuditLogsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type WorkbookCreateNestedOneWithoutAuditLogsInput = {
+    create?: XOR<WorkbookCreateWithoutAuditLogsInput, WorkbookUncheckedCreateWithoutAuditLogsInput>
+    connectOrCreate?: WorkbookCreateOrConnectWithoutAuditLogsInput
+    connect?: WorkbookWhereUniqueInput
+  }
+
+  export type EnumAuditLogTypeFieldUpdateOperationsInput = {
+    set?: $Enums.AuditLogType
+  }
+
+  export type UserUpdateOneRequiredWithoutAuditLogsNestedInput = {
+    create?: XOR<UserCreateWithoutAuditLogsInput, UserUncheckedCreateWithoutAuditLogsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAuditLogsInput
+    upsert?: UserUpsertWithoutAuditLogsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAuditLogsInput, UserUpdateWithoutAuditLogsInput>, UserUncheckedUpdateWithoutAuditLogsInput>
+  }
+
+  export type WorkbookUpdateOneWithoutAuditLogsNestedInput = {
+    create?: XOR<WorkbookCreateWithoutAuditLogsInput, WorkbookUncheckedCreateWithoutAuditLogsInput>
+    connectOrCreate?: WorkbookCreateOrConnectWithoutAuditLogsInput
+    upsert?: WorkbookUpsertWithoutAuditLogsInput
+    disconnect?: WorkbookWhereInput | boolean
+    delete?: WorkbookWhereInput | boolean
+    connect?: WorkbookWhereUniqueInput
+    update?: XOR<XOR<WorkbookUpdateToOneWithWhereWithoutAuditLogsInput, WorkbookUpdateWithoutAuditLogsInput>, WorkbookUncheckedUpdateWithoutAuditLogsInput>
+  }
+
   export type UserCreateNestedOneWithoutWorkbooksInput = {
     create?: XOR<UserCreateWithoutWorkbooksInput, UserUncheckedCreateWithoutWorkbooksInput>
     connectOrCreate?: UserCreateOrConnectWithoutWorkbooksInput
@@ -13486,6 +15299,13 @@ export namespace Prisma {
     connect?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
   }
 
+  export type AuditLogCreateNestedManyWithoutWorkbookInput = {
+    create?: XOR<AuditLogCreateWithoutWorkbookInput, AuditLogUncheckedCreateWithoutWorkbookInput> | AuditLogCreateWithoutWorkbookInput[] | AuditLogUncheckedCreateWithoutWorkbookInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutWorkbookInput | AuditLogCreateOrConnectWithoutWorkbookInput[]
+    createMany?: AuditLogCreateManyWorkbookInputEnvelope
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+  }
+
   export type WorksheetUncheckedCreateNestedManyWithoutWorkbookInput = {
     create?: XOR<WorksheetCreateWithoutWorkbookInput, WorksheetUncheckedCreateWithoutWorkbookInput> | WorksheetCreateWithoutWorkbookInput[] | WorksheetUncheckedCreateWithoutWorkbookInput[]
     connectOrCreate?: WorksheetCreateOrConnectWithoutWorkbookInput | WorksheetCreateOrConnectWithoutWorkbookInput[]
@@ -13500,8 +15320,11 @@ export namespace Prisma {
     connect?: MembershipWhereUniqueInput | MembershipWhereUniqueInput[]
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
+  export type AuditLogUncheckedCreateNestedManyWithoutWorkbookInput = {
+    create?: XOR<AuditLogCreateWithoutWorkbookInput, AuditLogUncheckedCreateWithoutWorkbookInput> | AuditLogCreateWithoutWorkbookInput[] | AuditLogUncheckedCreateWithoutWorkbookInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutWorkbookInput | AuditLogCreateOrConnectWithoutWorkbookInput[]
+    createMany?: AuditLogCreateManyWorkbookInputEnvelope
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
   }
 
   export type UserUpdateOneRequiredWithoutWorkbooksNestedInput = {
@@ -13540,6 +15363,20 @@ export namespace Prisma {
     deleteMany?: MembershipScalarWhereInput | MembershipScalarWhereInput[]
   }
 
+  export type AuditLogUpdateManyWithoutWorkbookNestedInput = {
+    create?: XOR<AuditLogCreateWithoutWorkbookInput, AuditLogUncheckedCreateWithoutWorkbookInput> | AuditLogCreateWithoutWorkbookInput[] | AuditLogUncheckedCreateWithoutWorkbookInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutWorkbookInput | AuditLogCreateOrConnectWithoutWorkbookInput[]
+    upsert?: AuditLogUpsertWithWhereUniqueWithoutWorkbookInput | AuditLogUpsertWithWhereUniqueWithoutWorkbookInput[]
+    createMany?: AuditLogCreateManyWorkbookInputEnvelope
+    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    update?: AuditLogUpdateWithWhereUniqueWithoutWorkbookInput | AuditLogUpdateWithWhereUniqueWithoutWorkbookInput[]
+    updateMany?: AuditLogUpdateManyWithWhereWithoutWorkbookInput | AuditLogUpdateManyWithWhereWithoutWorkbookInput[]
+    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+  }
+
   export type WorksheetUncheckedUpdateManyWithoutWorkbookNestedInput = {
     create?: XOR<WorksheetCreateWithoutWorkbookInput, WorksheetUncheckedCreateWithoutWorkbookInput> | WorksheetCreateWithoutWorkbookInput[] | WorksheetUncheckedCreateWithoutWorkbookInput[]
     connectOrCreate?: WorksheetCreateOrConnectWithoutWorkbookInput | WorksheetCreateOrConnectWithoutWorkbookInput[]
@@ -13566,6 +15403,20 @@ export namespace Prisma {
     update?: MembershipUpdateWithWhereUniqueWithoutWorkbookInput | MembershipUpdateWithWhereUniqueWithoutWorkbookInput[]
     updateMany?: MembershipUpdateManyWithWhereWithoutWorkbookInput | MembershipUpdateManyWithWhereWithoutWorkbookInput[]
     deleteMany?: MembershipScalarWhereInput | MembershipScalarWhereInput[]
+  }
+
+  export type AuditLogUncheckedUpdateManyWithoutWorkbookNestedInput = {
+    create?: XOR<AuditLogCreateWithoutWorkbookInput, AuditLogUncheckedCreateWithoutWorkbookInput> | AuditLogCreateWithoutWorkbookInput[] | AuditLogUncheckedCreateWithoutWorkbookInput[]
+    connectOrCreate?: AuditLogCreateOrConnectWithoutWorkbookInput | AuditLogCreateOrConnectWithoutWorkbookInput[]
+    upsert?: AuditLogUpsertWithWhereUniqueWithoutWorkbookInput | AuditLogUpsertWithWhereUniqueWithoutWorkbookInput[]
+    createMany?: AuditLogCreateManyWorkbookInputEnvelope
+    set?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    disconnect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    delete?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    connect?: AuditLogWhereUniqueInput | AuditLogWhereUniqueInput[]
+    update?: AuditLogUpdateWithWhereUniqueWithoutWorkbookInput | AuditLogUpdateWithWhereUniqueWithoutWorkbookInput[]
+    updateMany?: AuditLogUpdateManyWithWhereWithoutWorkbookInput | AuditLogUpdateManyWithWhereWithoutWorkbookInput[]
+    deleteMany?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutMembershipsInput = {
@@ -13776,10 +15627,6 @@ export namespace Prisma {
     set?: $Enums.AnswerStatus
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
-  }
-
   export type QuestionUpdateOneRequiredWithoutAnswersNestedInput = {
     create?: XOR<QuestionCreateWithoutAnswersInput, QuestionUncheckedCreateWithoutAnswersInput>
     connectOrCreate?: QuestionCreateOrConnectWithoutAnswersInput
@@ -13966,6 +15813,22 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -14046,17 +15909,65 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAuditLogTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AuditLogType | EnumAuditLogTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AuditLogType[] | ListEnumAuditLogTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AuditLogType[] | ListEnumAuditLogTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAuditLogTypeFilter<$PrismaModel> | $Enums.AuditLogType
+  }
+
+  export type NestedEnumAuditLogTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AuditLogType | EnumAuditLogTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AuditLogType[] | ListEnumAuditLogTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AuditLogType[] | ListEnumAuditLogTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAuditLogTypeWithAggregatesFilter<$PrismaModel> | $Enums.AuditLogType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAuditLogTypeFilter<$PrismaModel>
+    _max?: NestedEnumAuditLogTypeFilter<$PrismaModel>
+  }
+  export type NestedJsonNullableFilter<$PrismaModel = never> = 
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
   export type NestedBytesNullableFilter<$PrismaModel = never> = {
@@ -14110,17 +16021,6 @@ export namespace Prisma {
     not?: NestedEnumAnswerStatusFilter<$PrismaModel> | $Enums.AnswerStatus
   }
 
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type NestedEnumAnswerStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.AnswerStatus | EnumAnswerStatusFieldRefInput<$PrismaModel>
     in?: $Enums.AnswerStatus[] | ListEnumAnswerStatusFieldRefInput<$PrismaModel>
@@ -14129,20 +16029,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumAnswerStatusFilter<$PrismaModel>
     _max?: NestedEnumAnswerStatusFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumGradeStatusFilter<$PrismaModel = never> = {
@@ -14172,6 +16058,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     worksheets?: WorksheetCreateNestedManyWithoutWorkbookInput
     memberships?: MembershipCreateNestedManyWithoutWorkbookInput
+    auditLogs?: AuditLogCreateNestedManyWithoutWorkbookInput
   }
 
   export type WorkbookUncheckedCreateWithoutDirectorInput = {
@@ -14184,6 +16071,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     worksheets?: WorksheetUncheckedCreateNestedManyWithoutWorkbookInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutWorkbookInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutWorkbookInput
   }
 
   export type WorkbookCreateOrConnectWithoutDirectorInput = {
@@ -14390,6 +16278,36 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AuditLogCreateWithoutUserInput = {
+    id?: string
+    type: $Enums.AuditLogType
+    title: string
+    description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    workbook?: WorkbookCreateNestedOneWithoutAuditLogsInput
+  }
+
+  export type AuditLogUncheckedCreateWithoutUserInput = {
+    id?: string
+    type: $Enums.AuditLogType
+    title: string
+    description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    workbookId?: string | null
+  }
+
+  export type AuditLogCreateOrConnectWithoutUserInput = {
+    where: AuditLogWhereUniqueInput
+    create: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput>
+  }
+
+  export type AuditLogCreateManyUserInputEnvelope = {
+    data: AuditLogCreateManyUserInput | AuditLogCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type WorkbookUpsertWithWhereUniqueWithoutDirectorInput = {
     where: WorkbookWhereUniqueInput
     update: XOR<WorkbookUpdateWithoutDirectorInput, WorkbookUncheckedUpdateWithoutDirectorInput>
@@ -14587,6 +16505,200 @@ export namespace Prisma {
     data: XOR<GradeUpdateManyMutationInput, GradeUncheckedUpdateManyWithoutApprovedByInput>
   }
 
+  export type AuditLogUpsertWithWhereUniqueWithoutUserInput = {
+    where: AuditLogWhereUniqueInput
+    update: XOR<AuditLogUpdateWithoutUserInput, AuditLogUncheckedUpdateWithoutUserInput>
+    create: XOR<AuditLogCreateWithoutUserInput, AuditLogUncheckedCreateWithoutUserInput>
+  }
+
+  export type AuditLogUpdateWithWhereUniqueWithoutUserInput = {
+    where: AuditLogWhereUniqueInput
+    data: XOR<AuditLogUpdateWithoutUserInput, AuditLogUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AuditLogUpdateManyWithWhereWithoutUserInput = {
+    where: AuditLogScalarWhereInput
+    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AuditLogScalarWhereInput = {
+    AND?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+    OR?: AuditLogScalarWhereInput[]
+    NOT?: AuditLogScalarWhereInput | AuditLogScalarWhereInput[]
+    id?: StringFilter<"AuditLog"> | string
+    type?: EnumAuditLogTypeFilter<"AuditLog"> | $Enums.AuditLogType
+    title?: StringFilter<"AuditLog"> | string
+    description?: StringNullableFilter<"AuditLog"> | string | null
+    metadata?: JsonNullableFilter<"AuditLog">
+    createdAt?: DateTimeFilter<"AuditLog"> | Date | string
+    userId?: StringFilter<"AuditLog"> | string
+    workbookId?: StringNullableFilter<"AuditLog"> | string | null
+  }
+
+  export type UserCreateWithoutAuditLogsInput = {
+    uid?: string
+    username: string
+    email: string
+    role: $Enums.Role
+    avatarUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    twoFactorCode?: string | null
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: Date | string | null
+    workbooks?: WorkbookCreateNestedManyWithoutDirectorInput
+    memberships?: MembershipCreateNestedManyWithoutUserInput
+    questions?: QuestionCreateNestedManyWithoutTeacherInput
+    answers?: AnswerCreateNestedManyWithoutStudentInput
+    annotations?: AnnotationCreateNestedManyWithoutTeacherInput
+    grades?: GradeCreateNestedManyWithoutTeacherInput
+    approvals?: GradeCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserUncheckedCreateWithoutAuditLogsInput = {
+    uid?: string
+    username: string
+    email: string
+    role: $Enums.Role
+    avatarUrl?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    twoFactorCode?: string | null
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: Date | string | null
+    workbooks?: WorkbookUncheckedCreateNestedManyWithoutDirectorInput
+    memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
+    questions?: QuestionUncheckedCreateNestedManyWithoutTeacherInput
+    answers?: AnswerUncheckedCreateNestedManyWithoutStudentInput
+    annotations?: AnnotationUncheckedCreateNestedManyWithoutTeacherInput
+    grades?: GradeUncheckedCreateNestedManyWithoutTeacherInput
+    approvals?: GradeUncheckedCreateNestedManyWithoutApprovedByInput
+  }
+
+  export type UserCreateOrConnectWithoutAuditLogsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAuditLogsInput, UserUncheckedCreateWithoutAuditLogsInput>
+  }
+
+  export type WorkbookCreateWithoutAuditLogsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    tag?: string | null
+    isArchived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    director: UserCreateNestedOneWithoutWorkbooksInput
+    worksheets?: WorksheetCreateNestedManyWithoutWorkbookInput
+    memberships?: MembershipCreateNestedManyWithoutWorkbookInput
+  }
+
+  export type WorkbookUncheckedCreateWithoutAuditLogsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    tag?: string | null
+    isArchived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directorId: string
+    worksheets?: WorksheetUncheckedCreateNestedManyWithoutWorkbookInput
+    memberships?: MembershipUncheckedCreateNestedManyWithoutWorkbookInput
+  }
+
+  export type WorkbookCreateOrConnectWithoutAuditLogsInput = {
+    where: WorkbookWhereUniqueInput
+    create: XOR<WorkbookCreateWithoutAuditLogsInput, WorkbookUncheckedCreateWithoutAuditLogsInput>
+  }
+
+  export type UserUpsertWithoutAuditLogsInput = {
+    update: XOR<UserUpdateWithoutAuditLogsInput, UserUncheckedUpdateWithoutAuditLogsInput>
+    create: XOR<UserCreateWithoutAuditLogsInput, UserUncheckedCreateWithoutAuditLogsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAuditLogsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAuditLogsInput, UserUncheckedUpdateWithoutAuditLogsInput>
+  }
+
+  export type UserUpdateWithoutAuditLogsInput = {
+    uid?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorCodeExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workbooks?: WorkbookUpdateManyWithoutDirectorNestedInput
+    memberships?: MembershipUpdateManyWithoutUserNestedInput
+    questions?: QuestionUpdateManyWithoutTeacherNestedInput
+    answers?: AnswerUpdateManyWithoutStudentNestedInput
+    annotations?: AnnotationUpdateManyWithoutTeacherNestedInput
+    grades?: GradeUpdateManyWithoutTeacherNestedInput
+    approvals?: GradeUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAuditLogsInput = {
+    uid?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorCodeExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workbooks?: WorkbookUncheckedUpdateManyWithoutDirectorNestedInput
+    memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
+    questions?: QuestionUncheckedUpdateManyWithoutTeacherNestedInput
+    answers?: AnswerUncheckedUpdateManyWithoutStudentNestedInput
+    annotations?: AnnotationUncheckedUpdateManyWithoutTeacherNestedInput
+    grades?: GradeUncheckedUpdateManyWithoutTeacherNestedInput
+    approvals?: GradeUncheckedUpdateManyWithoutApprovedByNestedInput
+  }
+
+  export type WorkbookUpsertWithoutAuditLogsInput = {
+    update: XOR<WorkbookUpdateWithoutAuditLogsInput, WorkbookUncheckedUpdateWithoutAuditLogsInput>
+    create: XOR<WorkbookCreateWithoutAuditLogsInput, WorkbookUncheckedCreateWithoutAuditLogsInput>
+    where?: WorkbookWhereInput
+  }
+
+  export type WorkbookUpdateToOneWithWhereWithoutAuditLogsInput = {
+    where?: WorkbookWhereInput
+    data: XOR<WorkbookUpdateWithoutAuditLogsInput, WorkbookUncheckedUpdateWithoutAuditLogsInput>
+  }
+
+  export type WorkbookUpdateWithoutAuditLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    tag?: NullableStringFieldUpdateOperationsInput | string | null
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    director?: UserUpdateOneRequiredWithoutWorkbooksNestedInput
+    worksheets?: WorksheetUpdateManyWithoutWorkbookNestedInput
+    memberships?: MembershipUpdateManyWithoutWorkbookNestedInput
+  }
+
+  export type WorkbookUncheckedUpdateWithoutAuditLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    tag?: NullableStringFieldUpdateOperationsInput | string | null
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directorId?: StringFieldUpdateOperationsInput | string
+    worksheets?: WorksheetUncheckedUpdateManyWithoutWorkbookNestedInput
+    memberships?: MembershipUncheckedUpdateManyWithoutWorkbookNestedInput
+  }
+
   export type UserCreateWithoutWorkbooksInput = {
     uid?: string
     username: string
@@ -14595,12 +16707,16 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    twoFactorCode?: string | null
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: Date | string | null
     memberships?: MembershipCreateNestedManyWithoutUserInput
     questions?: QuestionCreateNestedManyWithoutTeacherInput
     answers?: AnswerCreateNestedManyWithoutStudentInput
     annotations?: AnnotationCreateNestedManyWithoutTeacherInput
     grades?: GradeCreateNestedManyWithoutTeacherInput
     approvals?: GradeCreateNestedManyWithoutApprovedByInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWorkbooksInput = {
@@ -14611,12 +16727,16 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    twoFactorCode?: string | null
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: Date | string | null
     memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
     questions?: QuestionUncheckedCreateNestedManyWithoutTeacherInput
     answers?: AnswerUncheckedCreateNestedManyWithoutStudentInput
     annotations?: AnnotationUncheckedCreateNestedManyWithoutTeacherInput
     grades?: GradeUncheckedCreateNestedManyWithoutTeacherInput
     approvals?: GradeUncheckedCreateNestedManyWithoutApprovedByInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWorkbooksInput = {
@@ -14627,6 +16747,7 @@ export namespace Prisma {
   export type WorksheetCreateWithoutWorkbookInput = {
     id?: string
     title: string
+    description: string
     order?: number
     isLocked?: boolean
     yjsState?: Uint8Array | null
@@ -14638,6 +16759,7 @@ export namespace Prisma {
   export type WorksheetUncheckedCreateWithoutWorkbookInput = {
     id?: string
     title: string
+    description: string
     order?: number
     isLocked?: boolean
     yjsState?: Uint8Array | null
@@ -14680,6 +16802,36 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type AuditLogCreateWithoutWorkbookInput = {
+    id?: string
+    type: $Enums.AuditLogType
+    title: string
+    description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutAuditLogsInput
+  }
+
+  export type AuditLogUncheckedCreateWithoutWorkbookInput = {
+    id?: string
+    type: $Enums.AuditLogType
+    title: string
+    description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    userId: string
+  }
+
+  export type AuditLogCreateOrConnectWithoutWorkbookInput = {
+    where: AuditLogWhereUniqueInput
+    create: XOR<AuditLogCreateWithoutWorkbookInput, AuditLogUncheckedCreateWithoutWorkbookInput>
+  }
+
+  export type AuditLogCreateManyWorkbookInputEnvelope = {
+    data: AuditLogCreateManyWorkbookInput | AuditLogCreateManyWorkbookInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutWorkbooksInput = {
     update: XOR<UserUpdateWithoutWorkbooksInput, UserUncheckedUpdateWithoutWorkbooksInput>
     create: XOR<UserCreateWithoutWorkbooksInput, UserUncheckedCreateWithoutWorkbooksInput>
@@ -14699,12 +16851,16 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorCodeExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     questions?: QuestionUpdateManyWithoutTeacherNestedInput
     answers?: AnswerUpdateManyWithoutStudentNestedInput
     annotations?: AnnotationUpdateManyWithoutTeacherNestedInput
     grades?: GradeUpdateManyWithoutTeacherNestedInput
     approvals?: GradeUpdateManyWithoutApprovedByNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWorkbooksInput = {
@@ -14715,12 +16871,16 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorCodeExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
     questions?: QuestionUncheckedUpdateManyWithoutTeacherNestedInput
     answers?: AnswerUncheckedUpdateManyWithoutStudentNestedInput
     annotations?: AnnotationUncheckedUpdateManyWithoutTeacherNestedInput
     grades?: GradeUncheckedUpdateManyWithoutTeacherNestedInput
     approvals?: GradeUncheckedUpdateManyWithoutApprovedByNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WorksheetUpsertWithWhereUniqueWithoutWorkbookInput = {
@@ -14745,6 +16905,7 @@ export namespace Prisma {
     NOT?: WorksheetScalarWhereInput | WorksheetScalarWhereInput[]
     id?: StringFilter<"Worksheet"> | string
     title?: StringFilter<"Worksheet"> | string
+    description?: StringFilter<"Worksheet"> | string
     order?: IntFilter<"Worksheet"> | number
     isLocked?: BoolFilter<"Worksheet"> | boolean
     yjsState?: BytesNullableFilter<"Worksheet"> | Uint8Array | null
@@ -14769,6 +16930,22 @@ export namespace Prisma {
     data: XOR<MembershipUpdateManyMutationInput, MembershipUncheckedUpdateManyWithoutWorkbookInput>
   }
 
+  export type AuditLogUpsertWithWhereUniqueWithoutWorkbookInput = {
+    where: AuditLogWhereUniqueInput
+    update: XOR<AuditLogUpdateWithoutWorkbookInput, AuditLogUncheckedUpdateWithoutWorkbookInput>
+    create: XOR<AuditLogCreateWithoutWorkbookInput, AuditLogUncheckedCreateWithoutWorkbookInput>
+  }
+
+  export type AuditLogUpdateWithWhereUniqueWithoutWorkbookInput = {
+    where: AuditLogWhereUniqueInput
+    data: XOR<AuditLogUpdateWithoutWorkbookInput, AuditLogUncheckedUpdateWithoutWorkbookInput>
+  }
+
+  export type AuditLogUpdateManyWithWhereWithoutWorkbookInput = {
+    where: AuditLogScalarWhereInput
+    data: XOR<AuditLogUpdateManyMutationInput, AuditLogUncheckedUpdateManyWithoutWorkbookInput>
+  }
+
   export type UserCreateWithoutMembershipsInput = {
     uid?: string
     username: string
@@ -14777,12 +16954,16 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    twoFactorCode?: string | null
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: Date | string | null
     workbooks?: WorkbookCreateNestedManyWithoutDirectorInput
     questions?: QuestionCreateNestedManyWithoutTeacherInput
     answers?: AnswerCreateNestedManyWithoutStudentInput
     annotations?: AnnotationCreateNestedManyWithoutTeacherInput
     grades?: GradeCreateNestedManyWithoutTeacherInput
     approvals?: GradeCreateNestedManyWithoutApprovedByInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMembershipsInput = {
@@ -14793,12 +16974,16 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    twoFactorCode?: string | null
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: Date | string | null
     workbooks?: WorkbookUncheckedCreateNestedManyWithoutDirectorInput
     questions?: QuestionUncheckedCreateNestedManyWithoutTeacherInput
     answers?: AnswerUncheckedCreateNestedManyWithoutStudentInput
     annotations?: AnnotationUncheckedCreateNestedManyWithoutTeacherInput
     grades?: GradeUncheckedCreateNestedManyWithoutTeacherInput
     approvals?: GradeUncheckedCreateNestedManyWithoutApprovedByInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMembershipsInput = {
@@ -14816,6 +17001,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     director: UserCreateNestedOneWithoutWorkbooksInput
     worksheets?: WorksheetCreateNestedManyWithoutWorkbookInput
+    auditLogs?: AuditLogCreateNestedManyWithoutWorkbookInput
   }
 
   export type WorkbookUncheckedCreateWithoutMembershipsInput = {
@@ -14828,6 +17014,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     directorId: string
     worksheets?: WorksheetUncheckedCreateNestedManyWithoutWorkbookInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutWorkbookInput
   }
 
   export type WorkbookCreateOrConnectWithoutMembershipsInput = {
@@ -14854,12 +17041,16 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorCodeExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     workbooks?: WorkbookUpdateManyWithoutDirectorNestedInput
     questions?: QuestionUpdateManyWithoutTeacherNestedInput
     answers?: AnswerUpdateManyWithoutStudentNestedInput
     annotations?: AnnotationUpdateManyWithoutTeacherNestedInput
     grades?: GradeUpdateManyWithoutTeacherNestedInput
     approvals?: GradeUpdateManyWithoutApprovedByNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMembershipsInput = {
@@ -14870,12 +17061,16 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorCodeExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     workbooks?: WorkbookUncheckedUpdateManyWithoutDirectorNestedInput
     questions?: QuestionUncheckedUpdateManyWithoutTeacherNestedInput
     answers?: AnswerUncheckedUpdateManyWithoutStudentNestedInput
     annotations?: AnnotationUncheckedUpdateManyWithoutTeacherNestedInput
     grades?: GradeUncheckedUpdateManyWithoutTeacherNestedInput
     approvals?: GradeUncheckedUpdateManyWithoutApprovedByNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WorkbookUpsertWithoutMembershipsInput = {
@@ -14899,6 +17094,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     director?: UserUpdateOneRequiredWithoutWorkbooksNestedInput
     worksheets?: WorksheetUpdateManyWithoutWorkbookNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutWorkbookNestedInput
   }
 
   export type WorkbookUncheckedUpdateWithoutMembershipsInput = {
@@ -14911,6 +17107,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     directorId?: StringFieldUpdateOperationsInput | string
     worksheets?: WorksheetUncheckedUpdateManyWithoutWorkbookNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutWorkbookNestedInput
   }
 
   export type WorkbookCreateWithoutWorksheetsInput = {
@@ -14923,6 +17120,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     director: UserCreateNestedOneWithoutWorkbooksInput
     memberships?: MembershipCreateNestedManyWithoutWorkbookInput
+    auditLogs?: AuditLogCreateNestedManyWithoutWorkbookInput
   }
 
   export type WorkbookUncheckedCreateWithoutWorksheetsInput = {
@@ -14935,6 +17133,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     directorId: string
     memberships?: MembershipUncheckedCreateNestedManyWithoutWorkbookInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutWorkbookInput
   }
 
   export type WorkbookCreateOrConnectWithoutWorksheetsInput = {
@@ -14995,6 +17194,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     director?: UserUpdateOneRequiredWithoutWorkbooksNestedInput
     memberships?: MembershipUpdateManyWithoutWorkbookNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutWorkbookNestedInput
   }
 
   export type WorkbookUncheckedUpdateWithoutWorksheetsInput = {
@@ -15007,6 +17207,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     directorId?: StringFieldUpdateOperationsInput | string
     memberships?: MembershipUncheckedUpdateManyWithoutWorkbookNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutWorkbookNestedInput
   }
 
   export type QuestionUpsertWithWhereUniqueWithoutWorksheetInput = {
@@ -15028,6 +17229,7 @@ export namespace Prisma {
   export type WorksheetCreateWithoutQuestionsInput = {
     id?: string
     title: string
+    description: string
     order?: number
     isLocked?: boolean
     yjsState?: Uint8Array | null
@@ -15039,6 +17241,7 @@ export namespace Prisma {
   export type WorksheetUncheckedCreateWithoutQuestionsInput = {
     id?: string
     title: string
+    description: string
     order?: number
     isLocked?: boolean
     yjsState?: Uint8Array | null
@@ -15060,12 +17263,16 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    twoFactorCode?: string | null
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: Date | string | null
     workbooks?: WorkbookCreateNestedManyWithoutDirectorInput
     memberships?: MembershipCreateNestedManyWithoutUserInput
     answers?: AnswerCreateNestedManyWithoutStudentInput
     annotations?: AnnotationCreateNestedManyWithoutTeacherInput
     grades?: GradeCreateNestedManyWithoutTeacherInput
     approvals?: GradeCreateNestedManyWithoutApprovedByInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutQuestionsInput = {
@@ -15076,12 +17283,16 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    twoFactorCode?: string | null
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: Date | string | null
     workbooks?: WorkbookUncheckedCreateNestedManyWithoutDirectorInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
     answers?: AnswerUncheckedCreateNestedManyWithoutStudentInput
     annotations?: AnnotationUncheckedCreateNestedManyWithoutTeacherInput
     grades?: GradeUncheckedCreateNestedManyWithoutTeacherInput
     approvals?: GradeUncheckedCreateNestedManyWithoutApprovedByInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutQuestionsInput = {
@@ -15139,6 +17350,7 @@ export namespace Prisma {
   export type WorksheetUpdateWithoutQuestionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     yjsState?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
@@ -15150,6 +17362,7 @@ export namespace Prisma {
   export type WorksheetUncheckedUpdateWithoutQuestionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     yjsState?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
@@ -15177,12 +17390,16 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorCodeExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     workbooks?: WorkbookUpdateManyWithoutDirectorNestedInput
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     answers?: AnswerUpdateManyWithoutStudentNestedInput
     annotations?: AnnotationUpdateManyWithoutTeacherNestedInput
     grades?: GradeUpdateManyWithoutTeacherNestedInput
     approvals?: GradeUpdateManyWithoutApprovedByNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutQuestionsInput = {
@@ -15193,12 +17410,16 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorCodeExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     workbooks?: WorkbookUncheckedUpdateManyWithoutDirectorNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
     answers?: AnswerUncheckedUpdateManyWithoutStudentNestedInput
     annotations?: AnnotationUncheckedUpdateManyWithoutTeacherNestedInput
     grades?: GradeUncheckedUpdateManyWithoutTeacherNestedInput
     approvals?: GradeUncheckedUpdateManyWithoutApprovedByNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AnswerUpsertWithWhereUniqueWithoutQuestionInput = {
@@ -15252,12 +17473,16 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    twoFactorCode?: string | null
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: Date | string | null
     workbooks?: WorkbookCreateNestedManyWithoutDirectorInput
     memberships?: MembershipCreateNestedManyWithoutUserInput
     questions?: QuestionCreateNestedManyWithoutTeacherInput
     annotations?: AnnotationCreateNestedManyWithoutTeacherInput
     grades?: GradeCreateNestedManyWithoutTeacherInput
     approvals?: GradeCreateNestedManyWithoutApprovedByInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAnswersInput = {
@@ -15268,12 +17493,16 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    twoFactorCode?: string | null
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: Date | string | null
     workbooks?: WorkbookUncheckedCreateNestedManyWithoutDirectorInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
     questions?: QuestionUncheckedCreateNestedManyWithoutTeacherInput
     annotations?: AnnotationUncheckedCreateNestedManyWithoutTeacherInput
     grades?: GradeUncheckedCreateNestedManyWithoutTeacherInput
     approvals?: GradeUncheckedCreateNestedManyWithoutApprovedByInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAnswersInput = {
@@ -15394,12 +17623,16 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorCodeExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     workbooks?: WorkbookUpdateManyWithoutDirectorNestedInput
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     questions?: QuestionUpdateManyWithoutTeacherNestedInput
     annotations?: AnnotationUpdateManyWithoutTeacherNestedInput
     grades?: GradeUpdateManyWithoutTeacherNestedInput
     approvals?: GradeUpdateManyWithoutApprovedByNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAnswersInput = {
@@ -15410,12 +17643,16 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorCodeExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     workbooks?: WorkbookUncheckedUpdateManyWithoutDirectorNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
     questions?: QuestionUncheckedUpdateManyWithoutTeacherNestedInput
     annotations?: AnnotationUncheckedUpdateManyWithoutTeacherNestedInput
     grades?: GradeUncheckedUpdateManyWithoutTeacherNestedInput
     approvals?: GradeUncheckedUpdateManyWithoutApprovedByNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AnnotationUpsertWithWhereUniqueWithoutAnswerInput = {
@@ -15510,12 +17747,16 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    twoFactorCode?: string | null
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: Date | string | null
     workbooks?: WorkbookCreateNestedManyWithoutDirectorInput
     memberships?: MembershipCreateNestedManyWithoutUserInput
     questions?: QuestionCreateNestedManyWithoutTeacherInput
     answers?: AnswerCreateNestedManyWithoutStudentInput
     grades?: GradeCreateNestedManyWithoutTeacherInput
     approvals?: GradeCreateNestedManyWithoutApprovedByInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAnnotationsInput = {
@@ -15526,12 +17767,16 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    twoFactorCode?: string | null
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: Date | string | null
     workbooks?: WorkbookUncheckedCreateNestedManyWithoutDirectorInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
     questions?: QuestionUncheckedCreateNestedManyWithoutTeacherInput
     answers?: AnswerUncheckedCreateNestedManyWithoutStudentInput
     grades?: GradeUncheckedCreateNestedManyWithoutTeacherInput
     approvals?: GradeUncheckedCreateNestedManyWithoutApprovedByInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAnnotationsInput = {
@@ -15595,12 +17840,16 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorCodeExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     workbooks?: WorkbookUpdateManyWithoutDirectorNestedInput
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     questions?: QuestionUpdateManyWithoutTeacherNestedInput
     answers?: AnswerUpdateManyWithoutStudentNestedInput
     grades?: GradeUpdateManyWithoutTeacherNestedInput
     approvals?: GradeUpdateManyWithoutApprovedByNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAnnotationsInput = {
@@ -15611,12 +17860,16 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorCodeExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     workbooks?: WorkbookUncheckedUpdateManyWithoutDirectorNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
     questions?: QuestionUncheckedUpdateManyWithoutTeacherNestedInput
     answers?: AnswerUncheckedUpdateManyWithoutStudentNestedInput
     grades?: GradeUncheckedUpdateManyWithoutTeacherNestedInput
     approvals?: GradeUncheckedUpdateManyWithoutApprovedByNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AnswerCreateWithoutGradeInput = {
@@ -15658,12 +17911,16 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    twoFactorCode?: string | null
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: Date | string | null
     workbooks?: WorkbookCreateNestedManyWithoutDirectorInput
     memberships?: MembershipCreateNestedManyWithoutUserInput
     questions?: QuestionCreateNestedManyWithoutTeacherInput
     answers?: AnswerCreateNestedManyWithoutStudentInput
     annotations?: AnnotationCreateNestedManyWithoutTeacherInput
     approvals?: GradeCreateNestedManyWithoutApprovedByInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutGradesInput = {
@@ -15674,12 +17931,16 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    twoFactorCode?: string | null
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: Date | string | null
     workbooks?: WorkbookUncheckedCreateNestedManyWithoutDirectorInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
     questions?: QuestionUncheckedCreateNestedManyWithoutTeacherInput
     answers?: AnswerUncheckedCreateNestedManyWithoutStudentInput
     annotations?: AnnotationUncheckedCreateNestedManyWithoutTeacherInput
     approvals?: GradeUncheckedCreateNestedManyWithoutApprovedByInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutGradesInput = {
@@ -15695,12 +17956,16 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    twoFactorCode?: string | null
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: Date | string | null
     workbooks?: WorkbookCreateNestedManyWithoutDirectorInput
     memberships?: MembershipCreateNestedManyWithoutUserInput
     questions?: QuestionCreateNestedManyWithoutTeacherInput
     answers?: AnswerCreateNestedManyWithoutStudentInput
     annotations?: AnnotationCreateNestedManyWithoutTeacherInput
     grades?: GradeCreateNestedManyWithoutTeacherInput
+    auditLogs?: AuditLogCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutApprovalsInput = {
@@ -15711,12 +17976,16 @@ export namespace Prisma {
     avatarUrl?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    twoFactorCode?: string | null
+    twoFactorVerified?: boolean
+    twoFactorCodeExpiry?: Date | string | null
     workbooks?: WorkbookUncheckedCreateNestedManyWithoutDirectorInput
     memberships?: MembershipUncheckedCreateNestedManyWithoutUserInput
     questions?: QuestionUncheckedCreateNestedManyWithoutTeacherInput
     answers?: AnswerUncheckedCreateNestedManyWithoutStudentInput
     annotations?: AnnotationUncheckedCreateNestedManyWithoutTeacherInput
     grades?: GradeUncheckedCreateNestedManyWithoutTeacherInput
+    auditLogs?: AuditLogUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutApprovalsInput = {
@@ -15780,12 +18049,16 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorCodeExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     workbooks?: WorkbookUpdateManyWithoutDirectorNestedInput
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     questions?: QuestionUpdateManyWithoutTeacherNestedInput
     answers?: AnswerUpdateManyWithoutStudentNestedInput
     annotations?: AnnotationUpdateManyWithoutTeacherNestedInput
     approvals?: GradeUpdateManyWithoutApprovedByNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGradesInput = {
@@ -15796,12 +18069,16 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorCodeExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     workbooks?: WorkbookUncheckedUpdateManyWithoutDirectorNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
     questions?: QuestionUncheckedUpdateManyWithoutTeacherNestedInput
     answers?: AnswerUncheckedUpdateManyWithoutStudentNestedInput
     annotations?: AnnotationUncheckedUpdateManyWithoutTeacherNestedInput
     approvals?: GradeUncheckedUpdateManyWithoutApprovedByNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutApprovalsInput = {
@@ -15823,12 +18100,16 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorCodeExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     workbooks?: WorkbookUpdateManyWithoutDirectorNestedInput
     memberships?: MembershipUpdateManyWithoutUserNestedInput
     questions?: QuestionUpdateManyWithoutTeacherNestedInput
     answers?: AnswerUpdateManyWithoutStudentNestedInput
     annotations?: AnnotationUpdateManyWithoutTeacherNestedInput
     grades?: GradeUpdateManyWithoutTeacherNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutApprovalsInput = {
@@ -15839,12 +18120,16 @@ export namespace Prisma {
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    twoFactorCode?: NullableStringFieldUpdateOperationsInput | string | null
+    twoFactorVerified?: BoolFieldUpdateOperationsInput | boolean
+    twoFactorCodeExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     workbooks?: WorkbookUncheckedUpdateManyWithoutDirectorNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutUserNestedInput
     questions?: QuestionUncheckedUpdateManyWithoutTeacherNestedInput
     answers?: AnswerUncheckedUpdateManyWithoutStudentNestedInput
     annotations?: AnnotationUncheckedUpdateManyWithoutTeacherNestedInput
     grades?: GradeUncheckedUpdateManyWithoutTeacherNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WorkbookCreateManyDirectorInput = {
@@ -15921,6 +18206,16 @@ export namespace Prisma {
     teacherId: string
   }
 
+  export type AuditLogCreateManyUserInput = {
+    id?: string
+    type: $Enums.AuditLogType
+    title: string
+    description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    workbookId?: string | null
+  }
+
   export type WorkbookUpdateWithoutDirectorInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -15931,6 +18226,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     worksheets?: WorksheetUpdateManyWithoutWorkbookNestedInput
     memberships?: MembershipUpdateManyWithoutWorkbookNestedInput
+    auditLogs?: AuditLogUpdateManyWithoutWorkbookNestedInput
   }
 
   export type WorkbookUncheckedUpdateWithoutDirectorInput = {
@@ -15943,6 +18239,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     worksheets?: WorksheetUncheckedUpdateManyWithoutWorkbookNestedInput
     memberships?: MembershipUncheckedUpdateManyWithoutWorkbookNestedInput
+    auditLogs?: AuditLogUncheckedUpdateManyWithoutWorkbookNestedInput
   }
 
   export type WorkbookUncheckedUpdateManyWithoutDirectorInput = {
@@ -16153,9 +18450,40 @@ export namespace Prisma {
     teacherId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type AuditLogUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAuditLogTypeFieldUpdateOperationsInput | $Enums.AuditLogType
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workbook?: WorkbookUpdateOneWithoutAuditLogsNestedInput
+  }
+
+  export type AuditLogUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAuditLogTypeFieldUpdateOperationsInput | $Enums.AuditLogType
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workbookId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type AuditLogUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAuditLogTypeFieldUpdateOperationsInput | $Enums.AuditLogType
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workbookId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type WorksheetCreateManyWorkbookInput = {
     id?: string
     title: string
+    description: string
     order?: number
     isLocked?: boolean
     yjsState?: Uint8Array | null
@@ -16170,9 +18498,20 @@ export namespace Prisma {
     userId: string
   }
 
+  export type AuditLogCreateManyWorkbookInput = {
+    id?: string
+    type: $Enums.AuditLogType
+    title: string
+    description?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    userId: string
+  }
+
   export type WorksheetUpdateWithoutWorkbookInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     yjsState?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
@@ -16184,6 +18523,7 @@ export namespace Prisma {
   export type WorksheetUncheckedUpdateWithoutWorkbookInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     yjsState?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
@@ -16195,6 +18535,7 @@ export namespace Prisma {
   export type WorksheetUncheckedUpdateManyWithoutWorkbookInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
     order?: IntFieldUpdateOperationsInput | number
     isLocked?: BoolFieldUpdateOperationsInput | boolean
     yjsState?: NullableBytesFieldUpdateOperationsInput | Uint8Array | null
@@ -16220,6 +18561,36 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AuditLogUpdateWithoutWorkbookInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAuditLogTypeFieldUpdateOperationsInput | $Enums.AuditLogType
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAuditLogsNestedInput
+  }
+
+  export type AuditLogUncheckedUpdateWithoutWorkbookInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAuditLogTypeFieldUpdateOperationsInput | $Enums.AuditLogType
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type AuditLogUncheckedUpdateManyWithoutWorkbookInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumAuditLogTypeFieldUpdateOperationsInput | $Enums.AuditLogType
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     userId?: StringFieldUpdateOperationsInput | string
   }
 

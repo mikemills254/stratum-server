@@ -1,4 +1,4 @@
-import { Question } from "../../generated/prisma/index";
+import { Question } from "../../../prisma/generated/prisma";
 import { ICreateQuestion, IQuestionService, IUpdateQuestion } from "../../types/questions.types";
 declare class QuestionService implements IQuestionService {
     private repository;
