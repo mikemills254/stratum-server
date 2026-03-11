@@ -16,5 +16,13 @@ router.get("/search-teachers", auth_middlware_1.default.verify, async (req, res,
         next(error);
     }
 });
+router.get("/search-students", auth_middlware_1.default.verify, async (req, res, next) => {
+    try {
+        await controller.handleSearchStudents(req, res);
+    }
+    catch (error) {
+        next(error);
+    }
+});
 exports.default = router;
 //# sourceMappingURL=user.routes.js.map

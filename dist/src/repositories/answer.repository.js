@@ -10,6 +10,19 @@ class AnswerRepository {
                 student: { connect: { uid: data.studentId } },
                 text: data.text || "",
             },
+            include: {
+                annotations: {
+                    include: {
+                        teacher: {
+                            select: {
+                                username: true,
+                                avatarUrl: true
+                            }
+                        }
+                    }
+                },
+                grade: true
+            }
         });
     }
     async getById(id) {
@@ -17,8 +30,26 @@ class AnswerRepository {
             where: { id },
             include: {
                 grade: true,
-                annotations: true,
+                annotations: {
+                    include: {
+                        teacher: {
+                            select: {
+                                username: true,
+                                avatarUrl: true
+                            }
+                        }
+                    }
+                },
                 student: true,
+                question: {
+                    include: {
+                        worksheet: {
+                            select: {
+                                workbookId: true
+                            }
+                        }
+                    }
+                }
             },
         });
     }
@@ -27,6 +58,19 @@ class AnswerRepository {
             where: {
                 questionId_studentId: { questionId, studentId },
             },
+            include: {
+                annotations: {
+                    include: {
+                        teacher: {
+                            select: {
+                                username: true,
+                                avatarUrl: true
+                            }
+                        }
+                    }
+                },
+                grade: true
+            }
         });
     }
     async update(id, data) {
@@ -43,7 +87,20 @@ class AnswerRepository {
     async getByQuestion(questionId) {
         return prisma_1.prisma.answer.findMany({
             where: { questionId },
-            include: { student: true, grade: true },
+            include: {
+                student: true,
+                grade: true,
+                annotations: {
+                    include: {
+                        teacher: {
+                            select: {
+                                username: true,
+                                avatarUrl: true
+                            }
+                        }
+                    }
+                }
+            },
         });
     }
 }

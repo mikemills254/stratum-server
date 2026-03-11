@@ -7,6 +7,7 @@ export interface ICreateGrade {
 }
 export declare class GradeRepository {
     create(data: ICreateGrade): Promise<Grade>;
+    getById(id: string): Promise<Grade | null>;
     getByAnswer(answerId: string): Promise<Grade | null>;
     update(id: string, data: Partial<Grade>): Promise<Grade>;
     approve(id: string, directorId: string): Promise<Grade>;

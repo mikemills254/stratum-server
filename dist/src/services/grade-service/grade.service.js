@@ -3,10 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GradeService = void 0;
 const grade_repository_1 = require("../../repositories/grade.repository");
 const answer_repository_1 = require("../../repositories/answer.repository");
+const audit_log_service_1 = require("../audit-log-service/audit-log.service");
 class GradeService {
     constructor() {
         this.repository = new grade_repository_1.GradeRepository();
         this.answerRepository = new answer_repository_1.AnswerRepository();
+        this.auditLogService = new audit_log_service_1.AuditLogService();
     }
     async assignGrade(data) {
         // Find answer to check its status
@@ -32,10 +34,36 @@ class GradeService {
         await this.answerRepository.update(data.answerId, {
             status: "GRADED",
         });
+        // Log activity
+        await this.auditLogService.createLog({
+            type: "GRADING",
+            title: "Grade Assigned",
+            description: `Teacher assigned a score of ${data.score}% to a student's answer.`,
+            userId: data.teacherId,
+            workbookId: answer.question.worksheet.workbookId,
+            metadata: {
+                answerId: data.answerId,
+                score: data.score
+            }
+        });
         return grade;
     }
     async approveGrade(id, directorId) {
         const grade = await this.repository.approve(id, directorId);
+        // Fetch grade to get relations for logging
+        const fullGrade = await this.repository.getById(id);
+        // Log activity
+        await this.auditLogService.createLog({
+            type: "GRADING",
+            title: "Grade Approved",
+            description: `Director approved a grade of ${fullGrade?.score}%.`,
+            userId: directorId,
+            workbookId: fullGrade.answer.question.worksheet.workbookId,
+            metadata: {
+                gradeId: id,
+                score: fullGrade?.score
+            }
+        });
         return grade;
     }
     async getPendingApprovals(directorId) {

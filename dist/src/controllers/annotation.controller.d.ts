@@ -5,5 +5,7 @@ export declare class AnnotationController {
     handleCreateAnnotation(req: Request, res: Response): Promise<Response>;
     handleGetAnnotationsByAnswer(req: Request, res: Response): Promise<Response>;
     handleResolveAnnotation(req: Request, res: Response): Promise<Response>;
+    handleUpdateAnnotation(req: Request, res: Response): Promise<Response>;
+    handleDeleteAnnotation(req: Request, res: Response): Promise<Response>;
 }
 //# sourceMappingURL=annotation.controller.d.ts.map

@@ -157,6 +157,58 @@ class WorkbookController {
             });
         }
     }
+    async handleGetExploreWorkbooks(req, res) {
+        try {
+            const user = req.user;
+            if (!user)
+                return res.status(401).json({ message: "Unauthorised", success: false });
+            const queryParams = {
+                query: req.query.query,
+                tag: req.query.tag,
+                limit: req.query.limit ? Number(req.query.limit) : undefined,
+                offset: req.query.offset ? Number(req.query.offset) : undefined
+            };
+            const workbooks = await this.service.searchExploreWorkbooks(user.uid, queryParams);
+            return res.status(200).json({
+                message: "Success",
+                data: workbooks,
+                success: true
+            });
+        }
+        catch (error) {
+            return res.status(500).json({
+                message: "Internal server error",
+                success: false,
+                error: error instanceof Error ? error.message : String(error)
+            });
+        }
+    }
+    async handleJoinWorkbook(req, res) {
+        try {
+            const user = req.user;
+            if (!user)
+                return res.status(401).json({ message: "Unauthorised", success: false });
+            const { workbookId } = req.body;
+            if (!workbookId) {
+                return res.status(400).json({
+                    message: "Workbook ID is required.",
+                    success: false
+                });
+            }
+            await this.service.joinWorkbook(user.uid, workbookId);
+            return res.status(200).json({
+                message: "Joined workbook successfully.",
+                success: true
+            });
+        }
+        catch (error) {
+            return res.status(500).json({
+                message: "Internal server error",
+                success: false,
+                error: error instanceof Error ? error.message : String(error)
+            });
+        }
+    }
 }
 exports.default = WorkbookController;
 //# sourceMappingURL=workbook.controller.js.map

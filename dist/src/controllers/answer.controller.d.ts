@@ -4,7 +4,9 @@ export declare class AnswerController {
     constructor();
     handleCreateAnswer(req: Request, res: Response): Promise<Response>;
     handleSubmitAnswer(req: Request, res: Response): Promise<Response>;
+    handleUpdateAnswerText(req: Request, res: Response): Promise<Response>;
     handleGetAnswer(req: Request, res: Response): Promise<Response>;
     handleGetAnswersByQuestion(req: Request, res: Response): Promise<Response>;
+    handleAnnotateAnswer(req: Request, res: Response): Promise<Response>;
 }
 //# sourceMappingURL=answer.controller.d.ts.map

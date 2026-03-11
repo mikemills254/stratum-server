@@ -8,6 +8,7 @@ export interface ICreateAnnotation {
 export declare class AnnotationRepository {
     create(data: ICreateAnnotation): Promise<Annotation>;
     getByAnswer(answerId: string): Promise<Annotation[]>;
+    getById(id: string): Promise<Annotation | null>;
     update(id: string, data: Partial<Annotation>): Promise<Annotation>;
     delete(id: string): Promise<void>;
     resolve(id: string): Promise<Annotation>;

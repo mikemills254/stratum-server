@@ -23,8 +23,27 @@ const grade_routes_1 = __importDefault(require("./routes/grade.routes"));
 const annotation_routes_1 = __importDefault(require("./routes/annotation.routes"));
 const auth_routes_1 = __importDefault(require("./routes/auth.routes"));
 const user_routes_1 = __importDefault(require("./routes/user.routes"));
-app.use((0, morgan_1.default)('combined'));
-app.use((0, cors_1.default)());
+const audit_log_routes_1 = __importDefault(require("./routes/audit-log.routes"));
+app.use((0, morgan_1.default)("combined"));
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (!origin)
+            return callback(null, true);
+        console.log("request origin:", origin);
+        if (origin.startsWith("http://localhost") ||
+            origin.startsWith("http://127.0.0.1")) {
+            return callback(null, true);
+        }
+        if (origin === process.env.CLIENT_BASE_URL) {
+            return callback(null, true);
+        }
+        callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+};
+app.use((0, cors_1.default)(corsOptions));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use("/api/v1/workbook", workbook_routes_1.default);
@@ -36,15 +55,16 @@ app.use("/api/v1/grade", grade_routes_1.default);
 app.use("/api/v1/annotation", annotation_routes_1.default);
 app.use("/api/v1/auth", auth_routes_1.default);
 app.use("/api/v1/user", user_routes_1.default);
-app.get('/', (req, res) => {
-    res.json({ message: 'Stratum Server is running!' });
+app.use("/api/v1/audit-log", audit_log_routes_1.default);
+app.get("/", (req, res) => {
+    res.json({ message: "Stratum Server is running!" });
 });
-server.on('upgrade', (request, socket, head) => {
+server.on("upgrade", (request, socket, head) => {
     wss.handleUpgrade(request, socket, head, (ws) => {
         hocuspocus_1.hocuspocusServer.handleConnection(ws, request);
     });
 });
 server.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
+    console.log(`Server is running on port ${port}`);
 });
 //# sourceMappingURL=index.js.map
