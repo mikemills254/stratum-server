@@ -41,9 +41,13 @@ app.use(cors({
         callback(new Error('Not allowed by CORS'));
     },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
+
+app.options('*', cors());
 
 app.use("/api/v1/workbook", workbookRoutes)
 app.use("/api/v1/worksheet", worksheetRoutes)
