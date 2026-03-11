@@ -24,30 +24,57 @@ import userRoutes from "./routes/user.routes"
 import auditLogRoutes from "./routes/audit-log.routes"
 
 app.use(morgan('combined'))
-app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin) return callback(null, true);
-        console.log("request origin", origin)
+// app.use(cors({
+//     origin: (origin, callback) => {
+//         if (!origin) return callback(null, true);
+//         console.log("request origin", origin)
         
-        // Allow any localhost origin
-        if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
-            return callback(null, true);
-        }
+//         // Allow any localhost origin
+//         if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
+//             return callback(null, true);
+//         }
         
-        if (origin === process.env.CLIENT_BASE_URL) {
-            return callback(null, true);
-        }
+//         if (origin === process.env.CLIENT_BASE_URL) {
+//             return callback(null, true);
+//         }
         
-        callback(new Error('Not allowed by CORS'));
-    },
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+//         callback(new Error('Not allowed by CORS'));
+//     },
+//     credentials: true,
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+//     allowedHeaders: ['Content-Type', 'Authorization'],
+// }));
+
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
+
+    console.log("request origin:", origin);
+
+    if (
+      origin.startsWith("http://localhost") ||
+      origin.startsWith("http://127.0.0.1")
+    ) {
+      return callback(null, true);
+    }
+
+    if (origin === process.env.CLIENT_BASE_URL) {
+      return callback(null, true);
+    }
+
+    callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 
-app.options('*', cors());
+// app.options('*', cors());
 
 app.use("/api/v1/workbook", workbookRoutes)
 app.use("/api/v1/worksheet", worksheetRoutes)
