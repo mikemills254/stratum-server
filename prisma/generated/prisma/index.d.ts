@@ -4331,6 +4331,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     tag: string | null
+    isPrivate: boolean | null
     isArchived: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -4342,6 +4343,7 @@ export namespace Prisma {
     name: string | null
     description: string | null
     tag: string | null
+    isPrivate: boolean | null
     isArchived: boolean | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -4353,6 +4355,7 @@ export namespace Prisma {
     name: number
     description: number
     tag: number
+    isPrivate: number
     isArchived: number
     createdAt: number
     updatedAt: number
@@ -4366,6 +4369,7 @@ export namespace Prisma {
     name?: true
     description?: true
     tag?: true
+    isPrivate?: true
     isArchived?: true
     createdAt?: true
     updatedAt?: true
@@ -4377,6 +4381,7 @@ export namespace Prisma {
     name?: true
     description?: true
     tag?: true
+    isPrivate?: true
     isArchived?: true
     createdAt?: true
     updatedAt?: true
@@ -4388,6 +4393,7 @@ export namespace Prisma {
     name?: true
     description?: true
     tag?: true
+    isPrivate?: true
     isArchived?: true
     createdAt?: true
     updatedAt?: true
@@ -4472,6 +4478,7 @@ export namespace Prisma {
     name: string
     description: string | null
     tag: string | null
+    isPrivate: boolean
     isArchived: boolean
     createdAt: Date
     updatedAt: Date
@@ -4500,6 +4507,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     tag?: boolean
+    isPrivate?: boolean
     isArchived?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -4516,6 +4524,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     tag?: boolean
+    isPrivate?: boolean
     isArchived?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -4528,6 +4537,7 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     tag?: boolean
+    isPrivate?: boolean
     isArchived?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -4540,13 +4550,14 @@ export namespace Prisma {
     name?: boolean
     description?: boolean
     tag?: boolean
+    isPrivate?: boolean
     isArchived?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     directorId?: boolean
   }
 
-  export type WorkbookOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "tag" | "isArchived" | "createdAt" | "updatedAt" | "directorId", ExtArgs["result"]["workbook"]>
+  export type WorkbookOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "description" | "tag" | "isPrivate" | "isArchived" | "createdAt" | "updatedAt" | "directorId", ExtArgs["result"]["workbook"]>
   export type WorkbookInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     director?: boolean | UserDefaultArgs<ExtArgs>
     worksheets?: boolean | Workbook$worksheetsArgs<ExtArgs>
@@ -4574,6 +4585,7 @@ export namespace Prisma {
       name: string
       description: string | null
       tag: string | null
+      isPrivate: boolean
       isArchived: boolean
       createdAt: Date
       updatedAt: Date
@@ -5009,6 +5021,7 @@ export namespace Prisma {
     readonly name: FieldRef<"Workbook", 'String'>
     readonly description: FieldRef<"Workbook", 'String'>
     readonly tag: FieldRef<"Workbook", 'String'>
+    readonly isPrivate: FieldRef<"Workbook", 'Boolean'>
     readonly isArchived: FieldRef<"Workbook", 'Boolean'>
     readonly createdAt: FieldRef<"Workbook", 'DateTime'>
     readonly updatedAt: FieldRef<"Workbook", 'DateTime'>
@@ -12358,6 +12371,7 @@ export namespace Prisma {
     name: 'name',
     description: 'description',
     tag: 'tag',
+    isPrivate: 'isPrivate',
     isArchived: 'isArchived',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt',
@@ -12824,6 +12838,7 @@ export namespace Prisma {
     name?: StringFilter<"Workbook"> | string
     description?: StringNullableFilter<"Workbook"> | string | null
     tag?: StringNullableFilter<"Workbook"> | string | null
+    isPrivate?: BoolFilter<"Workbook"> | boolean
     isArchived?: BoolFilter<"Workbook"> | boolean
     createdAt?: DateTimeFilter<"Workbook"> | Date | string
     updatedAt?: DateTimeFilter<"Workbook"> | Date | string
@@ -12839,6 +12854,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     tag?: SortOrderInput | SortOrder
+    isPrivate?: SortOrder
     isArchived?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -12857,6 +12873,7 @@ export namespace Prisma {
     name?: StringFilter<"Workbook"> | string
     description?: StringNullableFilter<"Workbook"> | string | null
     tag?: StringNullableFilter<"Workbook"> | string | null
+    isPrivate?: BoolFilter<"Workbook"> | boolean
     isArchived?: BoolFilter<"Workbook"> | boolean
     createdAt?: DateTimeFilter<"Workbook"> | Date | string
     updatedAt?: DateTimeFilter<"Workbook"> | Date | string
@@ -12872,6 +12889,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrderInput | SortOrder
     tag?: SortOrderInput | SortOrder
+    isPrivate?: SortOrder
     isArchived?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -12889,6 +12907,7 @@ export namespace Prisma {
     name?: StringWithAggregatesFilter<"Workbook"> | string
     description?: StringNullableWithAggregatesFilter<"Workbook"> | string | null
     tag?: StringNullableWithAggregatesFilter<"Workbook"> | string | null
+    isPrivate?: BoolWithAggregatesFilter<"Workbook"> | boolean
     isArchived?: BoolWithAggregatesFilter<"Workbook"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"Workbook"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Workbook"> | Date | string
@@ -13566,6 +13585,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     tag?: string | null
+    isPrivate?: boolean
     isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -13580,6 +13600,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     tag?: string | null
+    isPrivate?: boolean
     isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -13594,6 +13615,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     tag?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13608,6 +13630,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     tag?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13622,6 +13645,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     tag?: string | null
+    isPrivate?: boolean
     isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -13633,6 +13657,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     tag?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13643,6 +13668,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     tag?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14509,6 +14535,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     tag?: SortOrder
+    isPrivate?: SortOrder
     isArchived?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -14520,6 +14547,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     tag?: SortOrder
+    isPrivate?: SortOrder
     isArchived?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -14531,6 +14559,7 @@ export namespace Prisma {
     name?: SortOrder
     description?: SortOrder
     tag?: SortOrder
+    isPrivate?: SortOrder
     isArchived?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -16053,6 +16082,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     tag?: string | null
+    isPrivate?: boolean
     isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16066,6 +16096,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     tag?: string | null
+    isPrivate?: boolean
     isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16332,6 +16363,7 @@ export namespace Prisma {
     name?: StringFilter<"Workbook"> | string
     description?: StringNullableFilter<"Workbook"> | string | null
     tag?: StringNullableFilter<"Workbook"> | string | null
+    isPrivate?: BoolFilter<"Workbook"> | boolean
     isArchived?: BoolFilter<"Workbook"> | boolean
     createdAt?: DateTimeFilter<"Workbook"> | Date | string
     updatedAt?: DateTimeFilter<"Workbook"> | Date | string
@@ -16585,6 +16617,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     tag?: string | null
+    isPrivate?: boolean
     isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16598,6 +16631,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     tag?: string | null
+    isPrivate?: boolean
     isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16678,6 +16712,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     tag?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16691,6 +16726,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     tag?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16996,6 +17032,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     tag?: string | null
+    isPrivate?: boolean
     isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17009,6 +17046,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     tag?: string | null
+    isPrivate?: boolean
     isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17089,6 +17127,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     tag?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17102,6 +17141,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     tag?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17115,6 +17155,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     tag?: string | null
+    isPrivate?: boolean
     isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17128,6 +17169,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     tag?: string | null
+    isPrivate?: boolean
     isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17189,6 +17231,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     tag?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17202,6 +17245,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     tag?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18137,6 +18181,7 @@ export namespace Prisma {
     name: string
     description?: string | null
     tag?: string | null
+    isPrivate?: boolean
     isArchived?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18221,6 +18266,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     tag?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18234,6 +18280,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     tag?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18247,6 +18294,7 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     tag?: NullableStringFieldUpdateOperationsInput | string | null
+    isPrivate?: BoolFieldUpdateOperationsInput | boolean
     isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

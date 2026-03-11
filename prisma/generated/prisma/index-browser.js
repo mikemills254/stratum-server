@@ -146,6 +146,7 @@ exports.Prisma.WorkbookScalarFieldEnum = {
   name: 'name',
   description: 'description',
   tag: 'tag',
+  isPrivate: 'isPrivate',
   isArchived: 'isArchived',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',

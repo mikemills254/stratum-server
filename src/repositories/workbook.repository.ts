@@ -11,6 +11,7 @@ class WorkbookRepository implements IWorkbookRepository {
                     name: data.name,
                     description: data.description,
                     tag: data.tag,
+                    isPrivate: data.isPrivate ?? false,
                     director: {
                         connect: { uid: data.directorId }
                     },
@@ -57,6 +58,7 @@ class WorkbookRepository implements IWorkbookRepository {
                     ...(data.name && { name: data.name }),
                     ...(data.description && { description: data.description }),
                     ...(data.tag && { tag: data.tag }),
+                    ...(data.isPrivate !== undefined && { isPrivate: data.isPrivate }),
                 }
             })
             return workbook
@@ -93,11 +95,73 @@ class WorkbookRepository implements IWorkbookRepository {
                         ...(params.workbookIds ? [{ id: { in: params.workbookIds } }] : []),
                     ]
                 },
+                include: {
+                    _count: {
+                        select: {
+                            worksheets: true,
+                            memberships: true
+                        }
+                    }
+                },
                 orderBy: { createdAt: "desc" },
                 take: params.limit ?? 20,
                 skip: params.offset ?? 0,
             })
-            return workbooks
+            return workbooks as any;
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async searchPublic(userId: string, params: ISearchWorkBook): Promise<Workbook[]> {
+        try {
+            const workbooks = await prisma.workbook.findMany({
+                where: {
+                    isArchived: false,
+                    memberships: {
+                        none: { userId }
+                    },
+                    AND: [
+                        ...(params.query ? [{
+                            OR: [
+                                { name: { contains: params.query, mode: "insensitive" as const } },
+                                { description: { contains: params.query, mode: "insensitive" as const } },
+                                { tag: { contains: params.query, mode: "insensitive" as const } },
+                            ]
+                        }] : []),
+                        ...(params.tag ? [{ tag: { contains: params.tag, mode: "insensitive" as const } }] : []),
+                    ]
+                },
+                include: {
+                    _count: {
+                        select: {
+                            worksheets: true,
+                        }
+                    },
+                    memberships: {
+                        where: { role: Role.STUDENT },
+                        select: { id: true }
+                    },
+                    director: {
+                        select: {
+                            username: true,
+                            avatarUrl: true
+                        }
+                    }
+                },
+                orderBy: { createdAt: "desc" },
+                take: params.limit ?? 20,
+                skip: params.offset ?? 0,
+            })
+
+            // Map and inject student count
+            return workbooks.map((w: any) => ({
+                ...w,
+                _count: {
+                    worksheets: w._count.worksheets,
+                    students: w.memberships.length
+                }
+            })) as any;
         } catch (error) {
             throw error
         }

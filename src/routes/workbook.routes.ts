@@ -54,4 +54,20 @@ router.get("/:id/stats", AuthService.verify, async (req: Request, res: Response,
     }
 })
 
+router.get("/browse/explore", AuthService.verify, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        await controller.handleGetExploreWorkbooks(req, res);
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.post("/join", AuthService.verify, async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        await controller.handleJoinWorkbook(req, res);
+    } catch (error) {
+        next(error);
+    }
+});
+
 export default router;

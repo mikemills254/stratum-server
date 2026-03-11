@@ -5,6 +5,7 @@ export interface ICreateWorkBook {
     name: string;
     description?: string | null;
     tag?: string | null
+    isPrivate?: boolean
     directorId: string
 }
 
@@ -34,6 +35,7 @@ export interface IWorkbookRepository {
     edit(id: string, data: Partial<ICreateWorkBook>): Promise<Workbook | null>
     delete(id: string): Promise<void>
     search(params: ISearchWorkBook): Promise<Workbook[]>
+    searchPublic(userId: string, params: ISearchWorkBook): Promise<Workbook[]>
     getStats(id: string): Promise<IWorkbookStats>
 }
 
@@ -43,7 +45,9 @@ export interface IWorkbookService {
     editWorkbook(userId: string, workbookId: string, data: Partial<ICreateWorkBook>): Promise<Workbook>
     deleteWorkbook(userId: string, workbookId: string): Promise<void>
     searchWorkbooks(userId: string, params: ISearchWorkBook): Promise<Workbook[]>
+    searchExploreWorkbooks(userId: string, params: ISearchWorkBook): Promise<Workbook[]>
     getWorkbookStats(userId: string, workbookId: string): Promise<IWorkbookStats>
+    joinWorkbook(userId: string, workbookId: string): Promise<void>
 }
 
 export interface IWorkbookController {
@@ -51,6 +55,8 @@ export interface IWorkbookController {
     handleGetWorkbook(req: Request, res: Response): Promise<Response>
     handleEditWorkbook(req: Request, res: Response): Promise<Response>
     handleDeleteWorkbook(req: Request, res: Response): Promise<Response>
-    handleSearchWorkbooks(req: Request, res: Response): Promise<Response>
+    handleSearchWorkbooks(req: Request<any, any, any, ISearchWorkBook>, res: Response): Promise<Response>
     handleGetWorkbookStats(req: Request, res: Response): Promise<Response>
+    handleGetExploreWorkbooks(req: Request<any, any, any, ISearchWorkBook>, res: Response): Promise<Response>
+    handleJoinWorkbook(req: Request, res: Response): Promise<Response>
 }

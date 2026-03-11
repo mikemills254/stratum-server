@@ -105,6 +105,7 @@ model Workbook {
   name        String
   description String?
   tag         String?
+  isPrivate   Boolean  @default(false)
   isArchived  Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
