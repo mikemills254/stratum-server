@@ -1,1 +1,0 @@
-{"version":3,"file":"twofactor.d.ts","sourceRoot":"","sources":["../../../../../src/services/email-service/templates/twofactor.tsx"],"names":[],"mappings":"AAYA,UAAU,sBAAsB;IAC5B,IAAI,CAAC,EAAE,MAAM,CAAC;IACd,aAAa,CAAC,EAAE,MAAM,CAAC;CAC1B;AAED,eAAO,MAAM,iBAAiB,GAAI,yBAAyB,sBAAsB,4CAwChF,CAAC;AAgHF,eAAe,iBAAiB,CAAC"}
