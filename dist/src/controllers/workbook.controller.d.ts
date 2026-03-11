@@ -9,6 +9,8 @@ declare class WorkbookController implements IWorkbookController {
     handleDeleteWorkbook(req: Request, res: Response): Promise<Response>;
     handleSearchWorkbooks(req: Request, res: Response): Promise<Response>;
     handleGetWorkbookStats(req: Request, res: Response): Promise<Response>;
+    handleGetExploreWorkbooks(req: Request, res: Response): Promise<Response>;
+    handleJoinWorkbook(req: Request, res: Response): Promise<Response>;
 }
 export default WorkbookController;
 //# sourceMappingURL=workbook.controller.d.ts.map

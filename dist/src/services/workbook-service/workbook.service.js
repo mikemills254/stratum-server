@@ -155,6 +155,59 @@ class WorkbookService {
             throw error;
         }
     }
+    async searchExploreWorkbooks(userId, params) {
+        try {
+            if (!userId)
+                throw new Error("User ID is required.");
+            const user = await prisma_2.prisma.user.findUnique({ where: { uid: userId } });
+            if (!user)
+                throw new Error("User not found.");
+            if (user.role === prisma_1.Role.DIRECTOR) {
+                throw new Error("Directors do not have access to the Explore page.");
+            }
+            const workbooks = await this.repository.searchPublic(userId, params);
+            return workbooks;
+        }
+        catch (error) {
+            throw error;
+        }
+    }
+    async joinWorkbook(userId, workbookId) {
+        try {
+            if (!userId)
+                throw new Error("User ID is required.");
+            if (!workbookId)
+                throw new Error("Workbook ID is required.");
+            const workbook = await this.repository.get(workbookId);
+            if (!workbook)
+                throw new Error("Workbook not found.");
+            if (workbook.isPrivate) {
+                throw new Error("This workbook is private. You must be invited to join.");
+            }
+            // Check if already a member
+            const existing = await prisma_2.prisma.membership.findUnique({
+                where: {
+                    userId_workbookId: { userId, workbookId }
+                }
+            });
+            if (existing)
+                throw new Error("You are already a member of this workbook.");
+            // Students can join public workbooks
+            const user = await prisma_2.prisma.user.findUnique({ where: { uid: userId } });
+            if (!user)
+                throw new Error("User not found.");
+            await prisma_2.prisma.membership.create({
+                data: {
+                    userId,
+                    workbookId,
+                    role: user.role // Use the user's system-wide role
+                }
+            });
+        }
+        catch (error) {
+            throw error;
+        }
+    }
     async getWorkbookStats(userId, workbookId) {
         try {
             if (!userId)

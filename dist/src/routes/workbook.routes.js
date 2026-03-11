@@ -56,5 +56,21 @@ router.get("/:id/stats", auth_middlware_1.default.verify, async (req, res, next)
         next(error);
     }
 });
+router.get("/browse/explore", auth_middlware_1.default.verify, async (req, res, next) => {
+    try {
+        await controller.handleGetExploreWorkbooks(req, res);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+router.post("/join", auth_middlware_1.default.verify, async (req, res, next) => {
+    try {
+        await controller.handleJoinWorkbook(req, res);
+    }
+    catch (error) {
+        next(error);
+    }
+});
 exports.default = router;
 //# sourceMappingURL=workbook.routes.js.map

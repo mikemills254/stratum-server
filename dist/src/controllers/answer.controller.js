@@ -53,6 +53,27 @@ class AnswerController {
             });
         }
     }
+    async handleUpdateAnswerText(req, res) {
+        try {
+            const user = req.user;
+            if (!user)
+                return res.status(401).json({ message: "Unauthorized", success: false });
+            const { id } = req.params;
+            const { text } = req.body;
+            const answer = await this.service.updateAnswerText(id, text || "");
+            return res.status(200).json({
+                message: "Answer text updated",
+                data: answer,
+                success: true,
+            });
+        }
+        catch (error) {
+            return res.status(500).json({
+                message: "Internal server error",
+                success: false,
+            });
+        }
+    }
     async handleGetAnswer(req, res) {
         try {
             const { id } = req.params;
@@ -86,6 +107,30 @@ class AnswerController {
             return res.status(500).json({
                 message: "Internal server error",
                 success: false,
+            });
+        }
+    }
+    async handleAnnotateAnswer(req, res) {
+        try {
+            const user = req.user;
+            if (!user)
+                return res.status(401).json({ message: "Unauthorized", success: false });
+            const { id } = req.params;
+            const { text } = req.body;
+            if (!text?.trim())
+                return res.status(400).json({ message: "Annotation text is required", success: false });
+            const annotation = await this.service.annotateAnswer(id, user.uid, text);
+            return res.status(201).json({
+                message: "Annotation added",
+                data: annotation,
+                success: true,
+            });
+        }
+        catch (error) {
+            return res.status(500).json({
+                message: "Internal server error",
+                success: false,
+                error: error instanceof Error ? error.message : String(error),
             });
         }
     }

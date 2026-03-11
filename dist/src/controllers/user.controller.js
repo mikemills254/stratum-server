@@ -63,6 +63,67 @@ class UserController {
             });
         }
     }
+    async handleSearchStudents(req, res) {
+        try {
+            const user = req.user;
+            // Teachers can search for students to invite to their workbooks
+            if (!user || user.role === prisma_2.Role.STUDENT) {
+                return res.status(403).json({
+                    message: "Only Teachers and Directors can search for students.",
+                    success: false
+                });
+            }
+            const { query, workbookId } = req.query;
+            if (!query || typeof query !== 'string') {
+                return res.status(400).json({
+                    message: "Search query is required.",
+                    success: false
+                });
+            }
+            const students = await prisma_1.prisma.user.findMany({
+                where: {
+                    role: prisma_2.Role.STUDENT,
+                    OR: [
+                        { email: { contains: query, mode: 'insensitive' } },
+                        { username: { contains: query, mode: 'insensitive' } }
+                    ]
+                },
+                select: {
+                    uid: true,
+                    username: true,
+                    email: true,
+                    avatarUrl: true
+                },
+                take: 10
+            });
+            let studentsWithMembership = students;
+            if (workbookId && typeof workbookId === 'string') {
+                const memberships = await prisma_1.prisma.membership.findMany({
+                    where: {
+                        workbookId: workbookId,
+                        userId: { in: students.map(s => s.uid) }
+                    }
+                });
+                const memberIds = new Set(memberships.map(m => m.userId));
+                studentsWithMembership = students.map(s => ({
+                    ...s,
+                    isMember: memberIds.has(s.uid)
+                }));
+            }
+            return res.status(200).json({
+                message: "Success",
+                data: studentsWithMembership,
+                success: true
+            });
+        }
+        catch (error) {
+            return res.status(500).json({
+                message: "Internal server error",
+                success: false,
+                error: error instanceof Error ? error.message : String(error)
+            });
+        }
+    }
 }
 exports.default = UserController;
 //# sourceMappingURL=user.controller.js.map

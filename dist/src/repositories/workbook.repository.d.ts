@@ -6,6 +6,7 @@ declare class WorkbookRepository implements IWorkbookRepository {
     edit(id: string, data: Partial<ICreateWorkBook>): Promise<Workbook | null>;
     delete(id: string): Promise<void>;
     search(params: ISearchWorkBook): Promise<Workbook[]>;
+    searchPublic(userId: string, params: ISearchWorkBook): Promise<Workbook[]>;
     getStats(id: string): Promise<any>;
 }
 export default WorkbookRepository;

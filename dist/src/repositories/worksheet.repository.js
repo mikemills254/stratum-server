@@ -23,9 +23,10 @@ class WorksheetRepository {
     async get(id) {
         try {
             const worksheet = await prisma_1.prisma.worksheet.findUnique({
-                where: { id }
+                where: { id },
+                include: { questions: true }
             });
-            return worksheet;
+            return worksheet; // Using any for now to allow including relations
         }
         catch (error) {
             throw error;
@@ -40,7 +41,8 @@ class WorksheetRepository {
                     ...(data.order !== undefined && { order: data.order }),
                     ...(data.isLocked !== undefined && { isLocked: data.isLocked }),
                     ...(data.yjsState && { yjsState: data.yjsState }),
-                }
+                },
+                include: { questions: true }
             });
             return worksheet;
         }
@@ -62,7 +64,8 @@ class WorksheetRepository {
         try {
             const worksheets = await prisma_1.prisma.worksheet.findMany({
                 where: { workbookId },
-                orderBy: { order: "asc" }
+                orderBy: { order: "asc" },
+                include: { questions: true }
             });
             return worksheets;
         }

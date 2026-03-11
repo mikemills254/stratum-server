@@ -13,6 +13,27 @@ class GradeRepository {
             },
         });
     }
+    async getById(id) {
+        return prisma_1.prisma.grade.findUnique({
+            where: { id },
+            include: {
+                teacher: true,
+                answer: {
+                    include: {
+                        question: {
+                            include: {
+                                worksheet: {
+                                    select: {
+                                        workbookId: true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
     async getByAnswer(answerId) {
         return prisma_1.prisma.grade.findUnique({
             where: { answerId },

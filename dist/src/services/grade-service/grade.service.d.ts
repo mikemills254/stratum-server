@@ -3,6 +3,7 @@ import { ICreateGrade } from "../../repositories/grade.repository";
 export declare class GradeService {
     private repository;
     private answerRepository;
+    private auditLogService;
     constructor();
     assignGrade(data: ICreateGrade): Promise<Grade>;
     approveGrade(id: string, directorId: string): Promise<Grade>;

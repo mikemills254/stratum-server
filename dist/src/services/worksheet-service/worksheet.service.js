@@ -17,15 +17,15 @@ class WorksheetService {
         const workbook = await prisma_2.prisma.workbook.findUnique({ where: { id: workbookId } });
         if (!workbook)
             throw new Error("Workbook not found.");
-        // Director of the workbook always has full access
-        if (workbook.directorId === userId)
-            return;
-        // Check membership for Teachers
+        // Check membership
         const membership = await prisma_2.prisma.membership.findUnique({
             where: {
                 userId_workbookId: { userId, workbookId }
             }
         });
+        // If it's a read operation and the user is the Director, allow it even without membership
+        if (!requiredRole && workbook.directorId === userId)
+            return;
         if (!membership)
             throw new Error("You do not have access to this workbook.");
         if (requiredRole && membership.role !== requiredRole) {
@@ -40,7 +40,7 @@ class WorksheetService {
                 throw new Error("Title is required and must be a string.");
             if (!data.workbookId)
                 throw new Error("Workbook ID is required.");
-            await this.validateAccess(userId, data.workbookId, prisma_1.Role.DIRECTOR);
+            await this.validateAccess(userId, data.workbookId, prisma_1.Role.TEACHER);
             return await this.repository.create(data);
         }
         catch (error) {
@@ -72,7 +72,7 @@ class WorksheetService {
             const existing = await this.repository.get(worksheetId);
             if (!existing)
                 throw new Error("Worksheet not found.");
-            await this.validateAccess(userId, existing.workbookId, prisma_1.Role.DIRECTOR);
+            await this.validateAccess(userId, existing.workbookId, prisma_1.Role.TEACHER);
             if (data.title !== undefined && typeof data.title !== "string") {
                 throw new Error("Title must be a string.");
             }
@@ -94,7 +94,7 @@ class WorksheetService {
             const existing = await this.repository.get(worksheetId);
             if (!existing)
                 throw new Error("Worksheet not found.");
-            await this.validateAccess(userId, existing.workbookId, prisma_1.Role.DIRECTOR);
+            await this.validateAccess(userId, existing.workbookId, prisma_1.Role.TEACHER);
             await this.repository.delete(worksheetId);
         }
         catch (error) {

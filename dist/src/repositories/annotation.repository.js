@@ -11,12 +11,49 @@ class AnnotationRepository {
                 comment: data.comment,
                 suggestedText: data.suggestedText,
             },
+            include: {
+                teacher: true,
+                answer: {
+                    include: {
+                        question: {
+                            include: {
+                                worksheet: {
+                                    select: {
+                                        workbookId: true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         });
     }
     async getByAnswer(answerId) {
         return prisma_1.prisma.annotation.findMany({
             where: { answerId },
             include: { teacher: true },
+        });
+    }
+    async getById(id) {
+        return prisma_1.prisma.annotation.findUnique({
+            where: { id },
+            include: {
+                teacher: true,
+                answer: {
+                    include: {
+                        question: {
+                            include: {
+                                worksheet: {
+                                    select: {
+                                        workbookId: true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
         });
     }
     async update(id, data) {
