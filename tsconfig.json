@@ -23,7 +23,6 @@
     "src/services/bug-feature-report-service.ts"
   ],
   "exclude": [
-    "node_modules",
-    "dist"
+    "node_modules"
   ]
 }
