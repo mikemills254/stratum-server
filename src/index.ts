@@ -52,7 +52,7 @@ app.options('*', cors(corsOptions)); // Add this line
 
 app.use(morgan('combined'))
 app.use(express.json());
-app.use(express.urlencwd({ extended: true }))
+app.use(express.urlencoded({ extended: true }))
 
 app.use("/api/v1/workbook", workbookRoutes)
 app.use("/api/v1/worksheet", worksheetRoutes)
