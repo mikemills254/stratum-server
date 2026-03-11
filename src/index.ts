@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express from 'express';
-import cors, { CorsOptions } from "cors"
+import cors from "cors"
 import morgan from "morgan"
 import http from "http"
 import { WebSocketServer } from "ws"
@@ -9,7 +9,6 @@ import { hocuspocusServer } from "./hocuspocus"
 const app = express();
 const server = http.createServer(app);
 const port = process.env.PORT || 3000;
-
 const wss = new WebSocketServer({ noServer: true });
 
 import workbookRoutes from "./routes/workbook.routes"
@@ -23,55 +22,37 @@ import authRoutes from "./routes/auth.routes"
 import userRoutes from "./routes/user.routes"
 import auditLogRoutes from "./routes/audit-log.routes"
 
-app.use(morgan('combined'))
-// app.use(cors({
-//     origin: (origin, callback) => {
-//         if (!origin) return callback(null, true);
-//         console.log("request origin", origin)
-        
-//         // Allow any localhost origin
-//         if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
-//             return callback(null, true);
-//         }
-        
-//         if (origin === process.env.CLIENT_BASE_URL) {
-//             return callback(null, true);
-//         }
-        
-//         callback(new Error('Not allowed by CORS'));
-//     },
-//     credentials: true,
-//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-//     allowedHeaders: ['Content-Type', 'Authorization'],
-// }));
-
-
-const corsOptions: CorsOptions = {
+const corsOptions = {
   origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
     if (!origin) return callback(null, true);
     console.log("request origin:", origin);
+    
     if (
       origin.startsWith("http://localhost") ||
       origin.startsWith("http://127.0.0.1")
     ) {
       return callback(null, true);
     }
+    
     if (origin === process.env.CLIENT_BASE_URL) {
       return callback(null, true);
     }
-    callback(new Error("Not allowed by CORS"));
+    
+    console.warn(`CORS blocked origin: ${origin}`);
+    callback(null, false);
   },
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 
+// CRITICAL: Handle OPTIONS first, before other middleware
 app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Add this line
 
+app.use(morgan('combined'))
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }))
-
-// app.options('*', cors());
+app.use(express.urlencwd({ extended: true }))
 
 app.use("/api/v1/workbook", workbookRoutes)
 app.use("/api/v1/worksheet", worksheetRoutes)
