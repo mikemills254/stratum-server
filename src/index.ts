@@ -1,6 +1,6 @@
 import "dotenv/config";
 import express from 'express';
-import cors from "cors"
+import cors, { CorsOptions } from "cors"
 import morgan from "morgan"
 import http from "http"
 import { WebSocketServer } from "ws"
@@ -45,23 +45,20 @@ app.use(morgan('combined'))
 //     allowedHeaders: ['Content-Type', 'Authorization'],
 // }));
 
-const corsOptions = {
-  origin: (origin, callback) => {
+
+const corsOptions: CorsOptions = {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
     if (!origin) return callback(null, true);
-
     console.log("request origin:", origin);
-
     if (
       origin.startsWith("http://localhost") ||
       origin.startsWith("http://127.0.0.1")
     ) {
       return callback(null, true);
     }
-
     if (origin === process.env.CLIENT_BASE_URL) {
       return callback(null, true);
     }
-
     callback(new Error("Not allowed by CORS"));
   },
   credentials: true,
