@@ -46,9 +46,8 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 
-// CRITICAL: Handle OPTIONS first, before other middleware
+app.options('*', cors(corsOptions));
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // Add this line
 
 app.use(morgan('combined'))
 app.use(express.json());
