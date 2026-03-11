@@ -48,15 +48,14 @@ const corsOptions = {
 
 app.options('*', cors(corsOptions));
 
-// Add this FIRST, before any other middleware
 app.use((req, res, next) => {
-  console.log("=== INCOMING REQUEST ===");
-  console.log("Method:", req.method);
-  console.log("Path:", req.path);
-  console.log("Origin header:", req.headers.origin);
-  console.log("CLIENT_BASE_URL env:", process.env.CLIENT_BASE_URL);
-  console.log("Match:", req.headers.origin === process.env.CLIENT_BASE_URL);
-  next();
+    console.log("=== INCOMING REQUEST ===");
+    console.log("Method:", req.method);
+    console.log("Path:", req.path);
+    console.log("Origin header:", req.headers.origin);
+    console.log("CLIENT_BASE_URL env:", process.env.CLIENT_BASE_URL);
+    console.log("Match:", req.headers.origin === process.env.CLIENT_BASE_URL);
+    next();
 });
 app.use(cors(corsOptions));
 
@@ -85,6 +84,6 @@ server.on('upgrade', (request, socket, head) => {
     });
 });
 
-server.listen(port, () => {
+server.listen(Number(port), '0.0.0.0', () => {
     console.log(`Server is running on port ${port}`);
 });
